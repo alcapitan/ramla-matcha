@@ -1,0 +1,25 @@
+services:
+  ramla:
+    image: ramla-matcha:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ramla-matcha
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./data:/data     # commandes + abonnées conservées entre les redémarrages
+      - ./config:/app/config:ro       # modifier prix / frais de livraison sans reconstruire l'image
+    networks:
+      - gateway
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=gateway"
+      - "traefik.http.routers.ramla.rule=Host(`ramla-matcha.com`)"
+      - "traefik.http.routers.ramla.entrypoints=websecure"
+      - "traefik.http.routers.ramla.tls=true"
+      - "traefik.http.services.ramla.loadbalancer.server.port=3000"
+
+networks:
+  gateway:
+    external: true

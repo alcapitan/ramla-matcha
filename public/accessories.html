@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Accessories — Ramla رملة Matcha</title>
+  <meta name="description" content="Bamboo whisk, tote bag and cap — the Ramla رملة Matcha essentials.">
+  <meta name="theme-color" content="#EFE9DD">
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Courier+Prime&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,100;1,9..144,300..600,100&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body data-page="accessories">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="wrap page-title center">
+      <span class="eyebrow" data-i18n="accp.eyebrow"></span>
+      <h1 data-i18n="accp.title"></h1>
+      <p class="muted" style="max-width:34em;margin:18px auto 0" data-i18n="accp.lead"></p>
+    </section>
+
+    <section class="wrap" id="acc-list" style="padding-bottom:40px"></section>
+
+    <section class="section">
+      <div class="wrap split">
+        <div class="frame ratio-45 reveal"><img src="/img/hands-tins.webp" alt="" loading="lazy"></div>
+        <div>
+          <span class="eyebrow reveal" data-i18n="feat.eyebrow"></span>
+          <h2 class="reveal" data-i18n="feat.title"></h2>
+          <p class="muted reveal" style="margin:20px 0 30px" data-i18n="p.matcha-30g.desc"></p>
+          <div class="hero-cta reveal"><a class="btn" href="/shop.html" data-i18n="feat.cta"></a><span class="price" data-price="matcha-30g"></span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="/js/i18n.js"></script>
+  <script src="/js/app.js"></script>
+  <script>
+    (async function () {
+      const R = window.Ramla;
+      async function render() {
+        const shop = await R.shop();
+        const acc = shop.products.filter((p) => p.id !== 'matcha-30g');
+        // Grande mise en page alternée : visuel + texte
+        document.getElementById('acc-list').innerHTML = acc.map((p, i) => `
+          <article class="split ${i % 2 ? 'reverse' : ''}" id="${p.id}" style="padding:clamp(28px,5vw,64px) 0;${i ? 'border-top:1px solid var(--line)' : ''}">
+            <div class="frame ratio-45 reveal" style="background:var(--ivory)">${R.visual(p.image, R.pname(p))}</div>
+            <div>
+              <span class="eyebrow reveal">0${i + 1}</span>
+              <h2 class="reveal" data-pname="${p.id}">${R.esc(R.pname(p))}</h2>
+              <p class="muted reveal" style="margin:18px 0 22px;max-width:30em">${R.t('p.' + p.id + '.desc')}</p>
+              <div class="hero-cta reveal"><button class="btn" data-add="${p.id}">${R.t('btn.add')}</button><span class="price">${R.money(p.price)}</span></div>
+            </div>
+          </article>`).join('');
+        R.refreshProductNames(); R.observe();
+        if (location.hash) document.querySelector(location.hash)?.scrollIntoView();
+      }
+      render();
+      document.addEventListener('langchange', render);
+    })();
+  </script>
+</body>
+</html>

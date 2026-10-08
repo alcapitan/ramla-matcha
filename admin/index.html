@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Commandes — Ramla Admin</title>
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <style>
+    :root { --cream:#EFE9DD; --ivory:#F8F4EC; --matcha:#1E4A2C; --tint:#DDE5CF; --ink:#1B1B18; --muted:#6B675C; --line:#D9D0BF; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--cream); color: var(--ink); font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 15px; }
+    header { background: var(--matcha); color: var(--ivory); padding: 18px 16px; position: sticky; top: 0; z-index: 2; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+    header .wrap { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 0; }
+    h1 { margin: 0; font-size: 1.2rem; font-weight: 600; }
+    .stats { display: flex; gap: 14px; font-size: .85rem; opacity: .9; flex-wrap: wrap; }
+    .stats a { color: var(--ivory); }
+    .filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 18px 0; }
+    .filters button { border: 1px solid var(--line); background: var(--ivory); border-radius: 999px; padding: 8px 14px; font: inherit; cursor: pointer; }
+    .filters button.on { background: var(--matcha); color: var(--ivory); border-color: var(--matcha); }
+    .order { background: var(--ivory); border-radius: 14px; padding: 16px; margin-bottom: 12px; border-inline-start: 5px solid var(--line); }
+    .order[data-status="new"] { border-color: #D9A13B; }
+    .order[data-status="confirmed"] { border-color: #5B8BD6; }
+    .order[data-status="shipped"] { border-color: #8FAE6B; }
+    .order[data-status="delivered"] { border-color: var(--matcha); }
+    .order[data-status="cancelled"] { border-color: #9B3B2E; opacity: .65; }
+    .top { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+    .id { font-family: 'Courier New', monospace; font-weight: 700; font-size: 1.05rem; }
+    .date { color: var(--muted); font-size: .82rem; }
+    .total { font-weight: 700; font-size: 1.1rem; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+    .muted { color: var(--muted); }
+    .items { margin: 0; padding-inline-start: 18px; }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .wa { background: #25D366; color: #fff; text-decoration: none; padding: 10px 16px; border-radius: 999px; font-weight: 600; display: inline-flex; gap: 8px; align-items: center; }
+    select { font: inherit; padding: 9px 12px; border-radius: 999px; border: 1px solid var(--line); background: #fff; }
+    .empty { text-align: center; padding: 60px 0; color: var(--muted); }
+    .note { background: var(--tint); border-radius: 10px; padding: 8px 12px; font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <header><div class="wrap"><h1>🍵 Ramla — Commandes</h1><div class="stats" id="stats"></div></div></header>
+  <main class="wrap">
+    <div class="filters" id="filters"></div>
+    <div id="list"></div>
+  </main>
+  <script>
+    const LABEL = { all: 'Toutes', new: 'Nouvelles', confirmed: 'Confirmées', shipped: 'Expédiées', delivered: 'Livrées', cancelled: 'Annulées' };
+    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const money = (n) => Number(n).toLocaleString('fr-FR') + ' DA';
+    let data = { orders: [], subscribers: 0 }, filter = 'new';
+
+    async function load() {
+      const r = await fetch('/api/admin/orders', { credentials: 'same-origin' });
+      data = await r.json();
+      render();
+    }
+    function render() {
+      const o = data.orders;
+      const ca = o.filter((x) => ['confirmed', 'shipped', 'delivered'].includes(x.status)).reduce((s, x) => s + x.total, 0);
+      document.getElementById('stats').innerHTML =
+        `<span>${o.length} commandes</span><span>${o.filter((x) => x.status === 'new').length} à confirmer</span><span>CA confirmé : ${money(ca)}</span>` +
+        `<span>${data.subscribers} abonnées · <a href="/api/admin/subscribers.csv">CSV</a></span>`;
+      document.getElementById('filters').innerHTML = Object.keys(LABEL).map((k) => {
+        const n = k === 'all' ? o.length : o.filter((x) => x.status === k).length;
+        return `<button data-f="${k}" class="${k === filter ? 'on' : ''}">${LABEL[k]} (${n})</button>`;
+      }).join('');
+      const list = filter === 'all' ? o : o.filter((x) => x.status === filter);
+      document.getElementById('list').innerHTML = list.length ? list.map((x) => `
+        <div class="order" data-status="${x.status}">
+          <div class="top"><span class="id">${esc(x.id)}</span><span class="date">${new Date(x.createdAt).toLocaleString('fr-FR')}</span><span class="total">${money(x.total)}</span></div>
+          <div class="grid">
+            <div><b>${esc(x.customer.firstName)} ${esc(x.customer.lastName)}</b><br>📞 <a href="tel:${esc(x.customer.phone)}">${esc(x.customer.phone)}</a>${x.customer.email ? '<br>✉️ ' + esc(x.customer.email) : ''}<br>
+              📍 ${esc(x.customer.address)}, ${esc(x.customer.commune)}<br>${esc(x.wilaya.code)} — ${esc(x.wilaya.name)} · ${x.deliveryType === 'home' ? '🏠 Domicile' : '🏢 Stop desk'}</div>
+            <div><ul class="items">${x.items.map((i) => `<li>${i.qty} × ${esc(i.name)} — ${money(i.lineTotal)}</li>`).join('')}</ul>
+              <div class="muted" style="margin-top:6px;font-size:.88rem">Sous-total ${money(x.subtotal)}${x.discount ? ` · Remise −${money(x.discount)} (${esc(x.promoCode)})` : ''} · Livraison ${money(x.deliveryFee)}</div></div>
+          </div>
+          ${x.customer.notes ? `<p class="note">📝 ${esc(x.customer.notes)}</p>` : ''}
+          <div class="actions">
+            <a class="wa" href="${esc(x.whatsappLink)}" target="_blank" rel="noopener">💬 WhatsApp</a>
+            <select data-id="${esc(x.id)}">${['new', 'confirmed', 'shipped', 'delivered', 'cancelled'].map((s) => `<option value="${s}" ${s === x.status ? 'selected' : ''}>${LABEL[s].replace(/s$/, '')}</option>`).join('')}</select>
+            <span class="muted" style="font-size:.82rem">${x.lang === 'ar' ? 'Client en arabe' : 'Client en anglais'}</span>
+          </div>
+        </div>`).join('') : '<p class="empty">Aucune commande ici pour l\'instant.</p>';
+    }
+    document.addEventListener('click', (e) => { const b = e.target.closest('[data-f]'); if (b) { filter = b.dataset.f; render(); } });
+    document.addEventListener('change', async (e) => {
+      const s = e.target.closest('select[data-id]'); if (!s) return;
+      await fetch('/api/admin/orders/' + encodeURIComponent(s.dataset.id), { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: s.value }) });
+      const o = data.orders.find((x) => x.id === s.dataset.id); if (o) o.status = s.value; render();
+    });
+    load(); setInterval(load, 60000);
+  </script>
+</body>
+</html>

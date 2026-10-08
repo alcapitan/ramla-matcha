@@ -1,0 +1,9 @@
+node_modules
+data
+.env*
+*.tar
+*.tar.gz
+.git
+.gitignore
+*.md
+!config

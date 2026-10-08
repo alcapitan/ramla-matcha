@@ -1,0 +1,47 @@
+{
+  "currency": "DZD",
+  "discountPercent": 15,
+  "instagram": "ramla.matchadz",
+  "tiktok": "ramla.matchadz",
+  "delivery": {
+    "home": 600,
+    "desk": 400,
+    "overrides": {
+      "16": { "home": 400, "desk": 300 }
+    }
+  },
+  "products": [
+    {
+      "id": "matcha-30g",
+      "price": 5000,
+      "image": "/img/tin-dark.webp",
+      "gallery": [
+        "/img/tin-dark.webp",
+        "/img/hands-tins.webp",
+        "/img/tins-stone.jpg",
+        "/img/matcha-iced.webp",
+        "/img/matcha-hot.webp",
+	"/img/powder.webp"
+      ],
+      "name": { "en": "Ceremonial Matcha — 30g", "ar": "ماتشا سيريمونيال — 30 غ" }
+    },
+    {
+      "id": "whisk",
+      "price": 1800,
+      "image": "/img/whisk.webp",
+      "name": { "en": "Bamboo Whisk (Chasen)", "ar": "مخفقة الخيزران (تشاسن)" }
+    },
+    {
+      "id": "tote",
+      "price": 1500,
+      "image": "/img/bag.webp",
+      "name": { "en": "رملة Matcha Tote Bag", "ar": "حقيبة رملة ماتشا" }
+    },
+    {
+      "id": "cap",
+      "price": 2000,
+      "image": "/img/cap.webp",
+      "name": { "en": "رملة Matcha Cap", "ar": "قبعة رملة ماتشا" }
+    }
+  ]
+}

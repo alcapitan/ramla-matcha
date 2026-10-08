@@ -1,0 +1,6 @@
+docker build -t ramla-matcha:latest .
+docker save ramla-matcha:latest | gzip > ramla-matcha.tar.gz
+scp ramla-matcha.tar.gz alcap:containers/ramla-matcha
+
+docker load < ramla-matcha.tar.gz
+docker compose up -d --force-recreate
