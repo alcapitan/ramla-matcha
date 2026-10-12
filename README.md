@@ -1,85 +1,164 @@
-# Ramla رملة Matcha — site e-commerce
+# Ramla رملة Matcha
 
-Site en anglais / arabe (bouton **EN | ع**), paiement à la livraison, tout dans **une seule image Docker**.
+Boutique en ligne et système de gestion de commandes pour Ramla Matcha.  
+L'application comprend le site vitrine/boutique, la gestion du panier, la collecte des e-mails (newsletter avec code promo -15 %), l'enregistrement des commandes (paiement à la livraison avec confirmation WhatsApp) et un tableau de bord administrateur sécurisé.
 
-## Ce que fait le site
+## Architecture du projet
 
-| Page                            | Contenu                                                                                               |
-| ------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `/` Accueil                     | Hero, matcha, rituel, histoire, accessoires                                                           |
-| `/shop.html`                    | La boîte de matcha 30 g avec galerie de 9 photos                                                      |
-| `/story.html`                   | Qui sommes-nous — le parcours de Ramla                                                                |
-| `/accessories.html`             | Fouet bambou, tote bag, casquette                                                                     |
-| `/cart.html` → `/checkout.html` | Panier puis formulaire : nom, prénom, téléphone, wilaya (58), commune, adresse, domicile ou stop desk |
-| `/admin`                        | **Toi uniquement** : liste des commandes + bouton WhatsApp pré-rempli                                 |
-
-**Popup -15 %** : à la première visite, la cliente entre son e-mail → elle reçoit un code unique `RAMLA15-XXXXX` (utilisable une seule fois). Elle peut fermer avec la croix.
-
-**Commande** : pas de paiement en ligne. Quand elle confirme, la commande est enregistrée, tu reçois un e-mail, et sur `/admin` tu cliques **WhatsApp** : le message de confirmation est déjà écrit (dans sa langue).
-
-## Configuration
-
-1. `cp .env.example .env` puis remplis : mot de passe admin, ton e-mail, SMTP.
-   - Gmail : active la validation en 2 étapes → crée un « mot de passe d'application » → mets-le dans `SMTP_PASS`.
-   - Sans SMTP, le site marche quand même : le code -15 % s'affiche à l'écran au lieu d'être envoyé.
-2. Prix et frais de livraison : `config/shop.json` (en DZD).
-   - `delivery.home` / `delivery.desk` = tarif par défaut ; `overrides` = tarif par wilaya (ex. `"16"` = Alger).
-3. Textes : `public/js/i18n.js` (anglais + arabe). Photos : `public/img/`.
-
-## Docker — construire, exporter, déployer (sans registre)
-
-### 1. Sur ton ordinateur : construire l'image
-
-```bash
-cd ramla-matcha
-docker build -t ramla-matcha:1.0 .
+```text
+.
+├── admin/
+│   └── index.html             # Interface web du tableau de bord d'administration
+├── config/
+│   └── shop.json              # Configuration métier (produits, prix, frais de livraison, réseaux)
+├── data/                      # Données persistantes locales (créé au premier lancement)
+│   ├── orders.json            # Base des commandes clients enregistrées
+│   └── subscribers.json       # Liste des e-mails inscrits et codes promo générés
+├── public/                    # Fichiers statiques servis au public
+│   ├── css/style.css          # Feuilles de styles du site
+│   ├── js/
+│   │   ├── app.js             # Logique applicative front-end (panier, validation)
+│   │   └── i18n.js            # Traductions et internationalisation (AR/EN/FR)
+│   ├── img/                   # Visuels, logos et photographies
+│   ├── index.html             # Page d'accueil vitrine
+│   ├── shop.html              # Catalogue de vente
+│   ├── accessories.html       # Catalogue des accessoires
+│   ├── cart.html              # Vue du panier client
+│   ├── checkout.html          # Formulaire de commande et sélection de wilaya
+│   ├── thanks.html            # Confirmation de validation de commande
+│   └── story.html             # Présentation de la marque et histoire
+├── server.js                  # Serveur d'API Express, routage, envois d'e-mails et sécurité
+├── wilayas.js                 # Référentiel des 58 wilayas d'Algérie et tarification
+├── Dockerfile                 # Recette de conteneurisation de l'application
+├── docker-compose.yml         # Définition du service et labels Traefik pour la production
+├── flake.nix / flake.lock     # Environnement de développement reproductible (Nix)
+├── package.json               # Dépendances et scripts Node.js
+└── DEPLOY.txt                 # Notes internes d'infrastructure
 ```
 
-Test local (optionnel) :
+## ⚙️ Configuration de l'environnement (`.env`)
+
+Créez un fichier `.env` à la racine du projet (sur votre machine locale ou sur le serveur). Il ne doit jamais être commité dans Git :
 
 ```bash
-cp .env.example .env        # puis édite-le
-docker compose up -d        # → http://localhost
-docker compose down
+cp .env.example .env
 ```
 
-### 2. Exporter l'image en archive
+```ini
+SITE_URL=https://ramla-matcha.com
+
+# Administration
+ADMIN_PASSWORD=changez_ce_mot_de_passe_robuste
+
+# Destinataire des notifications de nouvelles commandes
+OWNER_EMAIL=contact@ramla-matcha.com
+
+# Configuration SMTP (envoi des e-mails transactionnels et codes promo)
+SMTP_HOST=smtp.exemple.com
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER=contact@ramla-matcha.com
+SMTP_PASS=mot_de_passe_smtp
+MAIL_FROM="contact@ramla-matcha.com"
+```
+
+Note : Si les identifiants SMTP ne sont pas renseignés, le serveur bascule automatiquement en mode secours et affiche les codes de réduction directement à l'écran pour permettre les tests.
+
+## Développement local
+
+Prérequis :
+
+- Node.js (version 26+)
+- `npm` ou environnement `nix develop`
+- Docker et Docker Compose
+
+### Démarrage
 
 ```bash
-docker save ramla-matcha:1.0 | gzip > ramla-matcha-1.0.tar.gz
+# 1. Installation des dépendances
+npm install
+# 2. Lancement du serveur en local
+npm start
 ```
 
-### 3. Envoyer sur le serveur (SSH)
+L'application est accessible à l'adresse `http://localhost:3000`.
+
+## Maintenance des dépendances npm
+
+Pour maintenir les modules externes à jour et corriger d'éventuelles vulnérabilités de sécurité :
 
 ```bash
-ssh user@IP_SERVEUR "mkdir -p ~/ramla"
-scp ramla-matcha-1.0.tar.gz docker-compose.yml .env user@IP_SERVEUR:~/ramla/
+# Vérifier les dépendances obsolètes
+npm outdated
+
+# Mettre à jour les dépendances respectant les plages semver
+npm update
+
+# Mettre à jour des packages majeurs (nécessite npm-check-updates)
+npx npm-check-updates -u && npm install
+
+# Analyser et corriger les failles connues
+npm audit
+npm audit fix
 ```
 
-(Sans SSH : copie ces 3 fichiers par clé USB / SFTP / FileZilla dans un dossier du serveur.)
+## Déploiement & CI/CD
 
-### 4. Sur le serveur : charger et lancer
+Le déploiement est entièrement automatisé via GitHub Actions lors de chaque merge ou push sur la branche `main` :
+
+- L'image Docker est construite et envoyée sur GitHub Container Registry (`ghcr.io`).
+- Le runner se connecte au serveur distant en SSH via un tunnel sécurisé Cloudflare Access (`cloudflared`).
+- Le serveur exécute un `docker compose pull` et relance le service sans interruption.
+
+### Fichiers exclus du dépôt et requis sur le serveur
+
+Pour des raisons évidentes de sécurité et de persistance, certains fichiers ne sont pas transférés par Git ni par l'image Docker et doivent exister manuellement sur l'hôte distant (`~/containers/ramla-matcha/`) :
+
+- `.env` : Contient les mots de passe et clés secrètes SMTP/Admin.
+- `docker-compose.yml` : Fichier déclarant le service, le réseau inverse Traefik et les montages de volumes.
+- `config/shop.json` : Permet d'ajuster les prix, produits et frais de port à chaud sans refaire de build d'image Docker.
+- `data/` : Dossier contenant les bases JSON `orders.json` et `subscribers.json`.
+
+## Commandes utiles
+
+- Suivre les logs en temps réel : `docker logs -f ramla-matcha`
+- Entrer dans le conteneur : `docker exec -it ramla-matcha sh`
+- Inspecter les variables d'environnement actives : `docker exec -it ramla-matcha env`
+- Redémarrer le service : `docker restart ramla-matcha`
+
+## Gestion des données et sauvegardes
+
+Les données sont persistées sur l'hôte via les montages définis dans `docker-compose.yml` :
+
+```yaml
+volumes:
+  - ./data:/data # Commandes + abonnées conservées entre les redémarrages
+  - ./config:/app/config:ro # Modifier prix / frais de livraison sans reconstruire l'image
+```
+
+### Sauvegarde des commandes et abonnées
+
+Pour créer une archive locale horodatée :
 
 ```bash
-ssh user@IP_SERVEUR
-cd ~/ramla
-gunzip -c ramla-matcha-1.0.tar.gz | docker load
-docker compose up -d --no-build
-docker compose logs -f        # vérifier (Ctrl+C pour quitter)
+# Créer une archive horodatée du dossier de données
+tar -czvf backup-ramla-$(date +%F).tar.gz ./data
+
+# Télécharger la sauvegarde depuis le serveur vers sa machine locale
+scp user@serveur:~/containers/ramla-matcha/backup-ramla-*.tar.gz ./backups/
 ```
 
-Le site répond sur le port 80. Admin : `http://IP_SERVEUR/admin` (n'importe quel identifiant + `ADMIN_PASSWORD`).
+### Restauration d'une sauvegarde
 
-### Mettre à jour plus tard
-
-Change la version (`1.1`) dans `docker-compose.yml` et dans les commandes, refais les étapes 1 → 4. Les commandes et abonnées sont dans le volume `ramla-data` : elles sont conservées.
-
-Sauvegarde des données :
+Pour réinjecter une sauvegarde précédente en cas d'incident, il est impératif de couper temporairement l'écriture par le conteneur pour éviter toute corruption des fichiers JSON :
 
 ```bash
-docker cp ramla-matcha:/data ./sauvegarde-$(date +%F)
+# Stopper le conteneur applicatif
+docker compose stop ramla-matcha
+
+# Restaurer l'archive ciblée
+tar -xzvf backup-ramla-<date>.tar.gz -C .
+
+# Relancer le service
+docker compose up -d
 ```
-
-### HTTPS (nom de domaine)
-
-Pour `https://`, place un reverse proxy devant (ex. Caddy : `ramlamatcha.com { reverse_proxy localhost:8080 }`) et change le port dans `docker-compose.yml` en `"8080:3000"`.
