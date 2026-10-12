@@ -1,74 +1,93 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Cart — Ramla رملة Matcha</title>
-  <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#EFE9DD">
-  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Courier+Prime&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,100;1,9..144,300..600,100&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body data-page="cart">
-  <div id="site-header"></div>
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+        <title>Cart — Ramla رملة Matcha</title>
+        <meta name="robots" content="noindex" />
+        <meta name="theme-color" content="#EFE9DD" />
+        <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Courier+Prime&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,100;1,9..144,300..600,100&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap"
+        />
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
+    <body data-page="cart">
+        <div id="site-header"></div>
 
-  <main class="wrap">
-    <div class="page-title"><h1 data-i18n="cart.title"></h1></div>
-    <div id="cart-root"></div>
-  </main>
+        <main class="wrap">
+            <div class="page-title"><h1 data-i18n="cart.title"></h1></div>
+            <div id="cart-root"></div>
+        </main>
 
-  <div id="site-footer"></div>
-  <script src="/js/i18n.js"></script>
-  <script src="/js/app.js"></script>
-  <script>
-    (async function () {
-      const R = window.Ramla;
-      const root = document.getElementById('cart-root');
-      async function render() {
-        const shop = await R.shop();
-        const items = R.cart.items().map((i) => ({ ...i, p: shop.products.find((p) => p.id === i.id) })).filter((i) => i.p);
-        if (!items.length) {
-          root.innerHTML = `<div class="empty"><div class="icon">🍵</div><p class="muted">${R.t('cart.empty')}</p><a class="btn" href="/shop.html">${R.t('cart.emptyCta')}</a></div>`;
-          return;
-        }
-        const subtotal = items.reduce((s, i) => s + i.p.price * i.qty, 0);
-        root.innerHTML = `<div class="cart-layout">
-          <div>${items.map((i) => `
+        <div id="site-footer"></div>
+        <script src="/js/i18n.js"></script>
+        <script src="/js/app.js"></script>
+        <script>
+            (async function () {
+                const R = window.Ramla;
+                const root = document.getElementById("cart-root");
+                async function render() {
+                    const shop = await R.shop();
+                    const items = R.cart
+                        .items()
+                        .map((i) => ({
+                            ...i,
+                            p: shop.products.find((p) => p.id === i.id),
+                        }))
+                        .filter((i) => i.p);
+                    if (!items.length) {
+                        root.innerHTML = `<div class="empty"><div class="icon">🍵</div><p class="muted">${R.t("cart.empty")}</p><a class="btn" href="/shop.html">${R.t("cart.emptyCta")}</a></div>`;
+                        return;
+                    }
+                    const subtotal = items.reduce(
+                        (s, i) => s + i.p.price * i.qty,
+                        0,
+                    );
+                    root.innerHTML = `<div class="cart-layout">
+          <div>${items
+              .map(
+                  (i) => `
             <div class="cart-line">
-              <a class="thumb" href="${i.id === 'matcha-30g' ? '/shop.html' : '/accessories.html#' + i.id}">${R.visual(i.p.image, R.pname(i.p))}</a>
+              <a class="thumb" href="${i.id === "matcha-30g" ? "/shop.html" : "/accessories.html#" + i.id}">${R.visual(i.p.image, R.pname(i.p))}</a>
               <div>
                 <h3>${R.esc(R.pname(i.p))}</h3>
                 <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px">
                   <div class="qty"><button data-set="${i.id}" data-q="${i.qty - 1}" aria-label="−">−</button><input value="${i.qty}" readonly aria-label="Quantity"><button data-set="${i.id}" data-q="${i.qty + 1}" aria-label="+">+</button></div>
-                  <button class="remove" data-set="${i.id}" data-q="0">${R.t('cart.remove')}</button>
+                  <button class="remove" data-set="${i.id}" data-q="0">${R.t("cart.remove")}</button>
                 </div>
               </div>
               <div class="line-total">${R.money(i.p.price * i.qty)}</div>
-            </div>`).join('')}
-            <p style="margin-top:22px"><a class="link-arrow" href="/shop.html">${R.t('cart.continue')}</a></p>
+            </div>`,
+              )
+              .join("")}
+            <p style="margin-top:22px"><a class="link-arrow" href="/shop.html">${R.t("cart.continue")}</a></p>
           </div>
           <aside class="summary">
-            <h2>${R.t('cart.summary')}</h2>
-            <div class="line"><span>${R.t('cart.subtotal')}</span><span>${R.money(subtotal)}</span></div>
-            <div class="line"><span>${R.t('cart.shipping')}</span><span class="muted" style="font-family:inherit;font-size:.85rem">${R.t('cart.shippingNext')}</span></div>
-            <div class="line total"><span>${R.t('cart.total')}</span><span>${R.money(subtotal)}</span></div>
-            <a class="btn block" style="margin-top:20px" href="/checkout.html">${R.t('cart.checkout')}</a>
-            <p class="muted" style="font-size:.84rem;margin:14px 0 0;text-align:center">💵 ${R.t('cart.cod')}</p>
+            <h2>${R.t("cart.summary")}</h2>
+            <div class="line"><span>${R.t("cart.subtotal")}</span><span>${R.money(subtotal)}</span></div>
+            <div class="line"><span>${R.t("cart.shipping")}</span><span class="muted" style="font-family:inherit;font-size:.85rem">${R.t("cart.shippingNext")}</span></div>
+            <div class="line total"><span>${R.t("cart.total")}</span><span>${R.money(subtotal)}</span></div>
+            <a class="btn block" style="margin-top:20px" href="/checkout.html">${R.t("cart.checkout")}</a>
+            <p class="muted" style="font-size:.84rem;margin:14px 0 0;text-align:center">💵 ${R.t("cart.cod")}</p>
           </aside>
         </div>`;
-      }
-      root.addEventListener('click', (e) => {
-        const b = e.target.closest('[data-set]');
-        if (!b) return;
-        R.cart.set(b.dataset.set, Number(b.dataset.q));
-      });
-      render();
-      document.addEventListener('cartchange', render);
-      document.addEventListener('langchange', render);
-    })();
-  </script>
-</body>
+                }
+                root.addEventListener("click", (e) => {
+                    const b = e.target.closest("[data-set]");
+                    if (!b) return;
+                    R.cart.set(b.dataset.set, Number(b.dataset.q));
+                });
+                render();
+                document.addEventListener("cartchange", render);
+                document.addEventListener("langchange", render);
+            })();
+        </script>
+    </body>
 </html>

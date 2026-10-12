@@ -4,14 +4,14 @@ Site en anglais / arabe (bouton **EN | ع**), paiement à la livraison, tout dan
 
 ## Ce que fait le site
 
-| Page | Contenu |
-|---|---|
-| `/` Accueil | Hero, matcha, rituel, histoire, accessoires |
-| `/shop.html` | La boîte de matcha 30 g avec galerie de 9 photos |
-| `/story.html` | Qui sommes-nous — le parcours de Ramla |
-| `/accessories.html` | Fouet bambou, tote bag, casquette |
+| Page                            | Contenu                                                                                               |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `/` Accueil                     | Hero, matcha, rituel, histoire, accessoires                                                           |
+| `/shop.html`                    | La boîte de matcha 30 g avec galerie de 9 photos                                                      |
+| `/story.html`                   | Qui sommes-nous — le parcours de Ramla                                                                |
+| `/accessories.html`             | Fouet bambou, tote bag, casquette                                                                     |
 | `/cart.html` → `/checkout.html` | Panier puis formulaire : nom, prénom, téléphone, wilaya (58), commune, adresse, domicile ou stop desk |
-| `/admin` | **Toi uniquement** : liste des commandes + bouton WhatsApp pré-rempli |
+| `/admin`                        | **Toi uniquement** : liste des commandes + bouton WhatsApp pré-rempli                                 |
 
 **Popup -15 %** : à la première visite, la cliente entre son e-mail → elle reçoit un code unique `RAMLA15-XXXXX` (utilisable une seule fois). Elle peut fermer avec la croix.
 
@@ -36,6 +36,7 @@ docker build -t ramla-matcha:1.0 .
 ```
 
 Test local (optionnel) :
+
 ```bash
 cp .env.example .env        # puis édite-le
 docker compose up -d        # → http://localhost
@@ -54,6 +55,7 @@ docker save ramla-matcha:1.0 | gzip > ramla-matcha-1.0.tar.gz
 ssh user@IP_SERVEUR "mkdir -p ~/ramla"
 scp ramla-matcha-1.0.tar.gz docker-compose.yml .env user@IP_SERVEUR:~/ramla/
 ```
+
 (Sans SSH : copie ces 3 fichiers par clé USB / SFTP / FileZilla dans un dossier du serveur.)
 
 ### 4. Sur le serveur : charger et lancer
@@ -73,6 +75,7 @@ Le site répond sur le port 80. Admin : `http://IP_SERVEUR/admin` (n'importe que
 Change la version (`1.1`) dans `docker-compose.yml` et dans les commandes, refais les étapes 1 → 4. Les commandes et abonnées sont dans le volume `ramla-data` : elles sont conservées.
 
 Sauvegarde des données :
+
 ```bash
 docker cp ramla-matcha:/data ./sauvegarde-$(date +%F)
 ```

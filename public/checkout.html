@@ -1,208 +1,520 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Checkout — Ramla رملة Matcha</title>
-  <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#EFE9DD">
-  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Courier+Prime&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,100;1,9..144,300..600,100&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body data-page="checkout">
-  <div id="site-header"></div>
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+        <title>Checkout — Ramla رملة Matcha</title>
+        <meta name="robots" content="noindex" />
+        <meta name="theme-color" content="#EFE9DD" />
+        <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Courier+Prime&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,100;1,9..144,300..600,100&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap"
+        />
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
+    <body data-page="checkout">
+        <div id="site-header"></div>
 
-  <main class="wrap">
-    <div class="page-title"><h1 data-i18n="co.title"></h1></div>
+        <main class="wrap">
+            <div class="page-title"><h1 data-i18n="co.title"></h1></div>
 
-    <form class="cart-layout" id="co-form" novalidate>
-      <div>
-        <div class="form-error" id="form-error" role="alert"></div>
+            <form class="cart-layout" id="co-form" novalidate>
+                <div>
+                    <div class="form-error" id="form-error" role="alert"></div>
 
-        <section class="form-card">
-          <h2><span class="num">1</span><span data-i18n="co.s1"></span></h2>
-          <div class="grid-2">
-            <div class="field"><label for="firstName" data-i18n="co.first"></label><input id="firstName" name="firstName" autocomplete="given-name" required maxlength="60"><span class="err" data-i18n="co.required"></span></div>
-            <div class="field"><label for="lastName" data-i18n="co.last"></label><input id="lastName" name="lastName" autocomplete="family-name" required maxlength="60"><span class="err" data-i18n="co.required"></span></div>
-          </div>
-          <div class="field">
-            <label for="phone" data-i18n="co.phone"></label>
-            <div class="phone-wrap"><span class="prefix">🇩🇿 +213</span><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="0X XX XX XX XX" required maxlength="20"></div>
-            <small class="muted" data-i18n="co.phoneHint"></small>
-            <span class="err" data-i18n="co.phoneErr"></span>
-          </div>
-          <div class="field"><label for="email" data-i18n="co.email"></label><input id="email" name="email" type="email" autocomplete="email" dir="ltr" maxlength="254"><span class="err" data-i18n="co.emailErr"></span></div>
-        </section>
+                    <section class="form-card">
+                        <h2>
+                            <span class="num">1</span
+                            ><span data-i18n="co.s1"></span>
+                        </h2>
+                        <div class="grid-2">
+                            <div class="field">
+                                <label
+                                    for="firstName"
+                                    data-i18n="co.first"
+                                ></label
+                                ><input
+                                    id="firstName"
+                                    name="firstName"
+                                    autocomplete="given-name"
+                                    required
+                                    maxlength="60"
+                                /><span
+                                    class="err"
+                                    data-i18n="co.required"
+                                ></span>
+                            </div>
+                            <div class="field">
+                                <label
+                                    for="lastName"
+                                    data-i18n="co.last"
+                                ></label
+                                ><input
+                                    id="lastName"
+                                    name="lastName"
+                                    autocomplete="family-name"
+                                    required
+                                    maxlength="60"
+                                /><span
+                                    class="err"
+                                    data-i18n="co.required"
+                                ></span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="phone" data-i18n="co.phone"></label>
+                            <div class="phone-wrap">
+                                <span class="prefix">🇩🇿 +213</span
+                                ><input
+                                    id="phone"
+                                    name="phone"
+                                    type="tel"
+                                    inputmode="tel"
+                                    autocomplete="tel-national"
+                                    placeholder="0X XX XX XX XX"
+                                    required
+                                    maxlength="20"
+                                />
+                            </div>
+                            <small
+                                class="muted"
+                                data-i18n="co.phoneHint"
+                            ></small>
+                            <span class="err" data-i18n="co.phoneErr"></span>
+                        </div>
+                        <div class="field">
+                            <label for="email" data-i18n="co.email"></label
+                            ><input
+                                id="email"
+                                name="email"
+                                type="email"
+                                autocomplete="email"
+                                dir="ltr"
+                                maxlength="254"
+                            /><span class="err" data-i18n="co.emailErr"></span>
+                        </div>
+                    </section>
 
-        <section class="form-card">
-          <h2><span class="num">2</span><span data-i18n="co.s2"></span></h2>
-          <div class="grid-2">
-            <div class="field"><label for="wilaya" data-i18n="co.wilaya"></label><select id="wilaya" name="wilaya" required></select><span class="err" data-i18n="co.required"></span></div>
-            <div class="field"><label for="commune" data-i18n="co.commune"></label><input id="commune" name="commune" autocomplete="address-level2" required maxlength="80"><span class="err" data-i18n="co.required"></span></div>
-          </div>
-          <div class="field"><label for="address" data-i18n="co.address"></label><input id="address" name="address" autocomplete="street-address" data-i18n-ph="co.addressPh" required maxlength="240"><span class="err" data-i18n="co.required"></span></div>
-          <div class="field">
-            <label data-i18n="co.type"></label>
-            <div class="choice">
-              <label><input type="radio" name="deliveryType" value="home" checked><span><b data-i18n="co.home"></b><small data-i18n="co.homeSub"></small><br><small class="price" data-fee="home"></small></span></label>
-              <label><input type="radio" name="deliveryType" value="desk"><span><b data-i18n="co.desk"></b><small data-i18n="co.deskSub"></small><br><small class="price" data-fee="desk"></small></span></label>
-            </div>
-          </div>
-          <div class="field"><label for="notes" data-i18n="co.notes"></label><textarea id="notes" name="notes" maxlength="500"></textarea></div>
-        </section>
-      </div>
+                    <section class="form-card">
+                        <h2>
+                            <span class="num">2</span
+                            ><span data-i18n="co.s2"></span>
+                        </h2>
+                        <div class="grid-2">
+                            <div class="field">
+                                <label
+                                    for="wilaya"
+                                    data-i18n="co.wilaya"
+                                ></label
+                                ><select
+                                    id="wilaya"
+                                    name="wilaya"
+                                    required
+                                ></select
+                                ><span
+                                    class="err"
+                                    data-i18n="co.required"
+                                ></span>
+                            </div>
+                            <div class="field">
+                                <label
+                                    for="commune"
+                                    data-i18n="co.commune"
+                                ></label
+                                ><input
+                                    id="commune"
+                                    name="commune"
+                                    autocomplete="address-level2"
+                                    required
+                                    maxlength="80"
+                                /><span
+                                    class="err"
+                                    data-i18n="co.required"
+                                ></span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="address" data-i18n="co.address"></label
+                            ><input
+                                id="address"
+                                name="address"
+                                autocomplete="street-address"
+                                data-i18n-ph="co.addressPh"
+                                required
+                                maxlength="240"
+                            /><span class="err" data-i18n="co.required"></span>
+                        </div>
+                        <div class="field">
+                            <label data-i18n="co.type"></label>
+                            <div class="choice">
+                                <label
+                                    ><input
+                                        type="radio"
+                                        name="deliveryType"
+                                        value="home"
+                                        checked /><span
+                                        ><b data-i18n="co.home"></b
+                                        ><small data-i18n="co.homeSub"></small
+                                        ><br /><small
+                                            class="price"
+                                            data-fee="home"
+                                        ></small></span
+                                ></label>
+                                <label
+                                    ><input
+                                        type="radio"
+                                        name="deliveryType"
+                                        value="desk" /><span
+                                        ><b data-i18n="co.desk"></b
+                                        ><small data-i18n="co.deskSub"></small
+                                        ><br /><small
+                                            class="price"
+                                            data-fee="desk"
+                                        ></small></span
+                                ></label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="notes" data-i18n="co.notes"></label
+                            ><textarea
+                                id="notes"
+                                name="notes"
+                                maxlength="500"
+                            ></textarea>
+                        </div>
+                    </section>
+                </div>
 
-      <aside class="summary">
-        <h2 data-i18n="cart.summary"></h2>
-        <div class="mini-items" id="mini-items"></div>
-        <label for="promo" style="font-size:.84rem;font-weight:500" data-i18n="co.promo"></label>
-        <div class="promo"><input id="promo" placeholder="RAMLA15-XXXXX" dir="ltr" autocomplete="off" maxlength="30"><button type="button" id="apply" data-i18n="co.apply"></button></div>
-        <p class="promo-msg" id="promo-msg" aria-live="polite"></p>
-        <div class="line"><span data-i18n="cart.subtotal"></span><span id="sum-sub"></span></div>
-        <div class="line discount" id="sum-disc-line" hidden><span data-i18n="co.discount"></span><span id="sum-disc"></span></div>
-        <div class="line"><span data-i18n="cart.shipping"></span><span id="sum-ship"></span></div>
-        <div class="line total"><span data-i18n="cart.total"></span><span id="sum-total"></span></div>
-        <button class="btn block" type="submit" id="submit" style="margin-top:20px" data-i18n="co.confirm"></button>
-        <p class="muted" style="font-size:.84rem;margin:14px 0 0;text-align:center" data-i18n="co.cod"></p>
-      </aside>
-    </form>
-  </main>
+                <aside class="summary">
+                    <h2 data-i18n="cart.summary"></h2>
+                    <div class="mini-items" id="mini-items"></div>
+                    <label
+                        for="promo"
+                        style="font-size: 0.84rem; font-weight: 500"
+                        data-i18n="co.promo"
+                    ></label>
+                    <div class="promo">
+                        <input
+                            id="promo"
+                            placeholder="RAMLA15-XXXXX"
+                            dir="ltr"
+                            autocomplete="off"
+                            maxlength="30"
+                        /><button
+                            type="button"
+                            id="apply"
+                            data-i18n="co.apply"
+                        ></button>
+                    </div>
+                    <p class="promo-msg" id="promo-msg" aria-live="polite"></p>
+                    <div class="line">
+                        <span data-i18n="cart.subtotal"></span
+                        ><span id="sum-sub"></span>
+                    </div>
+                    <div class="line discount" id="sum-disc-line" hidden>
+                        <span data-i18n="co.discount"></span
+                        ><span id="sum-disc"></span>
+                    </div>
+                    <div class="line">
+                        <span data-i18n="cart.shipping"></span
+                        ><span id="sum-ship"></span>
+                    </div>
+                    <div class="line total">
+                        <span data-i18n="cart.total"></span
+                        ><span id="sum-total"></span>
+                    </div>
+                    <button
+                        class="btn block"
+                        type="submit"
+                        id="submit"
+                        style="margin-top: 20px"
+                        data-i18n="co.confirm"
+                    ></button>
+                    <p
+                        class="muted"
+                        style="
+                            font-size: 0.84rem;
+                            margin: 14px 0 0;
+                            text-align: center;
+                        "
+                        data-i18n="co.cod"
+                    ></p>
+                </aside>
+            </form>
+        </main>
 
-  <div id="site-footer"></div>
-  <script src="/js/i18n.js"></script>
-  <script src="/js/app.js"></script>
-  <script>
-    (async function () {
-      const R = window.Ramla;
-      const shop = await R.shop();
-      const form = document.getElementById('co-form');
-      const $ = (id) => document.getElementById(id);
-      let promo = null; // { code, percent }
+        <div id="site-footer"></div>
+        <script src="/js/i18n.js"></script>
+        <script src="/js/app.js"></script>
+        <script>
+            (async function () {
+                const R = window.Ramla;
+                const shop = await R.shop();
+                const form = document.getElementById("co-form");
+                const $ = (id) => document.getElementById(id);
+                let promo = null; // { code, percent }
 
-      const items = () => R.cart.items().map((i) => ({ ...i, p: shop.products.find((p) => p.id === i.id) })).filter((i) => i.p);
-      if (!items().length) { location.replace('/cart.html'); return; }
+                const items = () =>
+                    R.cart
+                        .items()
+                        .map((i) => ({
+                            ...i,
+                            p: shop.products.find((p) => p.id === i.id),
+                        }))
+                        .filter((i) => i.p);
+                if (!items().length) {
+                    location.replace("/cart.html");
+                    return;
+                }
 
-      function fee() {
-        const w = $('wilaya').value;
-        const type = form.deliveryType.value;
-        if (!w) return null;
-        const o = shop.delivery.overrides?.[w];
-        return (o && o[type] != null) ? o[type] : shop.delivery[type];
-      }
-      function feeFor(type) {
-        const o = shop.delivery.overrides?.[$('wilaya').value];
-        return (o && o[type] != null) ? o[type] : shop.delivery[type];
-      }
-      function wilayas() {
-        const sel = $('wilaya'); const cur = sel.value;
-        sel.innerHTML = `<option value="">${R.t('co.wilayaPick')}</option>` + shop.wilayas.map((w) =>
-          `<option value="${w.code}">${String(w.code).padStart(2, '0')} — ${R.esc(R.lang() === 'ar' ? w.nameAr : w.name)}</option>`).join('');
-        sel.value = cur;
-      }
-      function summary() {
-        const its = items();
-        if (!its.length) { location.replace('/cart.html'); return; }
-        $('mini-items').innerHTML = its.map((i) => `<div class="line"><span>${R.esc(R.pname(i.p))} × ${i.qty}</span><span>${R.money(i.p.price * i.qty)}</span></div>`).join('');
-        const sub = its.reduce((s, i) => s + i.p.price * i.qty, 0);
-        const disc = promo ? Math.round(sub * promo.percent / 100) : 0;
-        const f = fee();
-        $('sum-sub').textContent = R.money(sub);
-        $('sum-disc-line').hidden = !disc;
-        $('sum-disc').textContent = '−' + R.money(disc);
-        $('sum-ship').textContent = f == null ? R.t('co.pickWilaya') : R.money(f);
-        $('sum-ship').style.fontFamily = f == null ? 'inherit' : '';
-        $('sum-total').textContent = R.money(sub - disc + (f || 0));
-        document.querySelectorAll('[data-fee]').forEach((el) => (el.textContent = R.money(feeFor(el.dataset.fee))));
-      }
+                function fee() {
+                    const w = $("wilaya").value;
+                    const type = form.deliveryType.value;
+                    if (!w) return null;
+                    const o = shop.delivery.overrides?.[w];
+                    return o && o[type] != null ? o[type] : shop.delivery[type];
+                }
+                function feeFor(type) {
+                    const o = shop.delivery.overrides?.[$("wilaya").value];
+                    return o && o[type] != null ? o[type] : shop.delivery[type];
+                }
+                function wilayas() {
+                    const sel = $("wilaya");
+                    const cur = sel.value;
+                    sel.innerHTML =
+                        `<option value="">${R.t("co.wilayaPick")}</option>` +
+                        shop.wilayas
+                            .map(
+                                (w) =>
+                                    `<option value="${w.code}">${String(w.code).padStart(2, "0")} — ${R.esc(R.lang() === "ar" ? w.nameAr : w.name)}</option>`,
+                            )
+                            .join("");
+                    sel.value = cur;
+                }
+                function summary() {
+                    const its = items();
+                    if (!its.length) {
+                        location.replace("/cart.html");
+                        return;
+                    }
+                    $("mini-items").innerHTML = its
+                        .map(
+                            (i) =>
+                                `<div class="line"><span>${R.esc(R.pname(i.p))} × ${i.qty}</span><span>${R.money(i.p.price * i.qty)}</span></div>`,
+                        )
+                        .join("");
+                    const sub = its.reduce((s, i) => s + i.p.price * i.qty, 0);
+                    const disc = promo
+                        ? Math.round((sub * promo.percent) / 100)
+                        : 0;
+                    const f = fee();
+                    $("sum-sub").textContent = R.money(sub);
+                    $("sum-disc-line").hidden = !disc;
+                    $("sum-disc").textContent = "−" + R.money(disc);
+                    $("sum-ship").textContent =
+                        f == null ? R.t("co.pickWilaya") : R.money(f);
+                    $("sum-ship").style.fontFamily = f == null ? "inherit" : "";
+                    $("sum-total").textContent = R.money(sub - disc + (f || 0));
+                    document
+                        .querySelectorAll("[data-fee]")
+                        .forEach(
+                            (el) =>
+                                (el.textContent = R.money(
+                                    feeFor(el.dataset.fee),
+                                )),
+                        );
+                }
 
-      async function applyPromo(silent) {
-        const code = $('promo').value.trim().toUpperCase();
-        const msg = $('promo-msg');
-        promo = null; msg.className = 'promo-msg'; msg.textContent = '';
-        if (!code) { summary(); return; }
-        try {
-          const r = await fetch('/api/validate-code', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code }) });
-          const d = await r.json();
-          if (d.valid) { promo = { code, percent: d.percent }; msg.className = 'promo-msg ok'; msg.textContent = R.t('co.promoOk'); }
-          else if (!silent) { msg.className = 'promo-msg bad'; msg.textContent = R.t(d.reason === 'used' ? 'co.promoUsed' : 'co.promoUnknown'); }
-        } catch { /* réseau */ }
-        summary();
-      }
+                async function applyPromo(silent) {
+                    const code = $("promo").value.trim().toUpperCase();
+                    const msg = $("promo-msg");
+                    promo = null;
+                    msg.className = "promo-msg";
+                    msg.textContent = "";
+                    if (!code) {
+                        summary();
+                        return;
+                    }
+                    try {
+                        const r = await fetch("/api/validate-code", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ code }),
+                        });
+                        const d = await r.json();
+                        if (d.valid) {
+                            promo = { code, percent: d.percent };
+                            msg.className = "promo-msg ok";
+                            msg.textContent = R.t("co.promoOk");
+                        } else if (!silent) {
+                            msg.className = "promo-msg bad";
+                            msg.textContent = R.t(
+                                d.reason === "used"
+                                    ? "co.promoUsed"
+                                    : "co.promoUnknown",
+                            );
+                        }
+                    } catch {
+                        /* réseau */
+                    }
+                    summary();
+                }
 
-      function validPhone(v) {
-        let p = v.replace(/[\s.\-()]/g, '');
-        if (p.startsWith('+213')) p = '0' + p.slice(4);
-        else if (p.startsWith('00213')) p = '0' + p.slice(5);
-        else if (/^[5-7]\d{8}$/.test(p)) p = '0' + p;
-        return /^0[5-7]\d{8}$/.test(p) ? p : null;
-      }
-      function validate() {
-        let ok = true;
-        const mark = (id, bad) => { $(id).closest('.field').classList.toggle('invalid', bad); if (bad) ok = false; };
-        ['firstName', 'lastName', 'commune', 'address', 'wilaya'].forEach((id) => mark(id, !$(id).value.trim()));
-        mark('phone', !validPhone($('phone').value));
-        const em = $('email').value.trim();
-        mark('email', !!em && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em));
-        return ok;
-      }
+                function validPhone(v) {
+                    let p = v.replace(/[\s.\-()]/g, "");
+                    if (p.startsWith("+213")) p = "0" + p.slice(4);
+                    else if (p.startsWith("00213")) p = "0" + p.slice(5);
+                    else if (/^[5-7]\d{8}$/.test(p)) p = "0" + p;
+                    return /^0[5-7]\d{8}$/.test(p) ? p : null;
+                }
+                function validate() {
+                    let ok = true;
+                    const mark = (id, bad) => {
+                        $(id)
+                            .closest(".field")
+                            .classList.toggle("invalid", bad);
+                        if (bad) ok = false;
+                    };
+                    [
+                        "firstName",
+                        "lastName",
+                        "commune",
+                        "address",
+                        "wilaya",
+                    ].forEach((id) => mark(id, !$(id).value.trim()));
+                    mark("phone", !validPhone($("phone").value));
+                    const em = $("email").value.trim();
+                    mark(
+                        "email",
+                        !!em && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em),
+                    );
+                    return ok;
+                }
 
-      wilayas(); summary();
-      const saved = (() => { try { return JSON.parse(localStorage.getItem('ramla_code')); } catch { return null; } })();
-      if (saved) { $('promo').value = saved; applyPromo(true); }
+                wilayas();
+                summary();
+                const saved = (() => {
+                    try {
+                        return JSON.parse(localStorage.getItem("ramla_code"));
+                    } catch {
+                        return null;
+                    }
+                })();
+                if (saved) {
+                    $("promo").value = saved;
+                    applyPromo(true);
+                }
 
-      $('apply').addEventListener('click', () => applyPromo(false));
-      $('promo').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); applyPromo(false); } });
-      $('wilaya').addEventListener('change', summary);
-      form.addEventListener('change', (e) => { if (e.target.name === 'deliveryType') summary(); });
-      form.addEventListener('input', (e) => { const f = e.target.closest('.field.invalid'); if (f) f.classList.remove('invalid'); });
-      document.addEventListener('langchange', () => { wilayas(); summary(); if ($('promo-msg').textContent) applyPromo(false); });
-      document.addEventListener('cartchange', summary);
+                $("apply").addEventListener("click", () => applyPromo(false));
+                $("promo").addEventListener("keydown", (e) => {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        applyPromo(false);
+                    }
+                });
+                $("wilaya").addEventListener("change", summary);
+                form.addEventListener("change", (e) => {
+                    if (e.target.name === "deliveryType") summary();
+                });
+                form.addEventListener("input", (e) => {
+                    const f = e.target.closest(".field.invalid");
+                    if (f) f.classList.remove("invalid");
+                });
+                document.addEventListener("langchange", () => {
+                    wilayas();
+                    summary();
+                    if ($("promo-msg").textContent) applyPromo(false);
+                });
+                document.addEventListener("cartchange", summary);
 
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const err = $('form-error'); err.classList.remove('show');
-        if (!validate()) {
-          err.textContent = R.t('co.fixErrors'); err.classList.add('show');
-          document.querySelector('.field.invalid input, .field.invalid select')?.focus();
-          return;
-        }
-        const btn = $('submit'); btn.disabled = true; btn.textContent = R.t('co.sending');
-        const body = {
-          lang: R.lang(),
-          customer: {
-            firstName: $('firstName').value, lastName: $('lastName').value,
-            phone: validPhone($('phone').value), email: $('email').value,
-            commune: $('commune').value, address: $('address').value, notes: $('notes').value,
-          },
-          wilaya: $('wilaya').value,
-          deliveryType: form.deliveryType.value,
-          items: R.cart.items().map(({ id, qty }) => ({ id, qty })),
-          promoCode: promo ? promo.code : null,
-        };
-        try {
-          const r = await fetch('/api/orders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-          const d = await r.json();
-          if (!r.ok) {
-            if (d.fields) {
-              d.fields.forEach((f) => { const el = $(f); if (el) el.closest('.field')?.classList.add('invalid'); });
-              if (d.fields.includes('promoCode')) { promo = null; $('promo-msg').className = 'promo-msg bad'; $('promo-msg').textContent = R.t('co.promoUsed'); summary(); }
-            }
-            throw new Error(d.error || 'server');
-          }
-          R.cart.clear();
-          try { localStorage.removeItem('ramla_code'); } catch {}
-          location.href = '/thanks.html?id=' + encodeURIComponent(d.id);
-        } catch (ex) {
-          err.textContent = ex.message === 'validation' ? R.t('co.fixErrors') : R.t('co.serverErr');
-          err.classList.add('show');
-          btn.disabled = false; btn.textContent = R.t('co.confirm');
-          err.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      });
-    })();
-  </script>
-</body>
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const err = $("form-error");
+                    err.classList.remove("show");
+                    if (!validate()) {
+                        err.textContent = R.t("co.fixErrors");
+                        err.classList.add("show");
+                        document
+                            .querySelector(
+                                ".field.invalid input, .field.invalid select",
+                            )
+                            ?.focus();
+                        return;
+                    }
+                    const btn = $("submit");
+                    btn.disabled = true;
+                    btn.textContent = R.t("co.sending");
+                    const body = {
+                        lang: R.lang(),
+                        customer: {
+                            firstName: $("firstName").value,
+                            lastName: $("lastName").value,
+                            phone: validPhone($("phone").value),
+                            email: $("email").value,
+                            commune: $("commune").value,
+                            address: $("address").value,
+                            notes: $("notes").value,
+                        },
+                        wilaya: $("wilaya").value,
+                        deliveryType: form.deliveryType.value,
+                        items: R.cart
+                            .items()
+                            .map(({ id, qty }) => ({ id, qty })),
+                        promoCode: promo ? promo.code : null,
+                    };
+                    try {
+                        const r = await fetch("/api/orders", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(body),
+                        });
+                        const d = await r.json();
+                        if (!r.ok) {
+                            if (d.fields) {
+                                d.fields.forEach((f) => {
+                                    const el = $(f);
+                                    if (el)
+                                        el.closest(".field")?.classList.add(
+                                            "invalid",
+                                        );
+                                });
+                                if (d.fields.includes("promoCode")) {
+                                    promo = null;
+                                    $("promo-msg").className = "promo-msg bad";
+                                    $("promo-msg").textContent =
+                                        R.t("co.promoUsed");
+                                    summary();
+                                }
+                            }
+                            throw new Error(d.error || "server");
+                        }
+                        R.cart.clear();
+                        try {
+                            localStorage.removeItem("ramla_code");
+                        } catch {}
+                        location.href =
+                            "/thanks.html?id=" + encodeURIComponent(d.id);
+                    } catch (ex) {
+                        err.textContent =
+                            ex.message === "validation"
+                                ? R.t("co.fixErrors")
+                                : R.t("co.serverErr");
+                        err.classList.add("show");
+                        btn.disabled = false;
+                        btn.textContent = R.t("co.confirm");
+                        err.scrollIntoView({
+                            behavior: "smooth",
+                            block: "center",
+                        });
+                    }
+                });
+            })();
+        </script>
+    </body>
 </html>

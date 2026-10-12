@@ -1,39 +1,70 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Thank you — Ramla رملة Matcha</title>
-  <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#EFE9DD">
-  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Courier+Prime&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,100;1,9..144,300..600,100&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body data-page="thanks">
-  <div id="site-header"></div>
-  <main class="thanks">
-    <div>
-      <div class="logo" style="margin-bottom:22px"><span class="ar" style="font-size:2.4rem">رملة</span><span class="lat" style="font-size:2.4rem">MATCHA</span></div>
-      <h1 data-i18n="ty.title"></h1>
-      <p class="muted" style="margin-top:12px" data-i18n="ty.lead"></p>
-      <div><span class="muted" style="font-size:.85rem" data-i18n="ty.id"></span><br><span class="order-id" id="oid" dir="ltr"></span></div>
-      <div class="steps">
-        <div><span class="ic">💬</span><span data-i18n="ty.s1"></span></div>
-        <div><span class="ic">📦</span><span data-i18n="ty.s2"></span></div>
-        <div><span class="ic">💵</span><span data-i18n="ty.s3"></span></div>
-      </div>
-      <a class="btn" href="/" data-i18n="ty.cta"></a>
-    </div>
-  </main>
-  <div id="site-footer"></div>
-  <script src="/js/i18n.js"></script>
-  <script src="/js/app.js"></script>
-  <script>
-    const id = new URLSearchParams(location.search).get('id') || '';
-    document.getElementById('oid').textContent = /^RML-\d+$/.test(id) ? id : '—';
-  </script>
-</body>
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+        <title>Thank you — Ramla رملة Matcha</title>
+        <meta name="robots" content="noindex" />
+        <meta name="theme-color" content="#EFE9DD" />
+        <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Courier+Prime&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,100;1,9..144,300..600,100&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap"
+        />
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
+    <body data-page="thanks">
+        <div id="site-header"></div>
+        <main class="thanks">
+            <div>
+                <div class="logo" style="margin-bottom: 22px">
+                    <span class="ar" style="font-size: 2.4rem">رملة</span
+                    ><span class="lat" style="font-size: 2.4rem">MATCHA</span>
+                </div>
+                <h1 data-i18n="ty.title"></h1>
+                <p
+                    class="muted"
+                    style="margin-top: 12px"
+                    data-i18n="ty.lead"
+                ></p>
+                <div>
+                    <span
+                        class="muted"
+                        style="font-size: 0.85rem"
+                        data-i18n="ty.id"
+                    ></span
+                    ><br /><span class="order-id" id="oid" dir="ltr"></span>
+                </div>
+                <div class="steps">
+                    <div>
+                        <span class="ic">💬</span
+                        ><span data-i18n="ty.s1"></span>
+                    </div>
+                    <div>
+                        <span class="ic">📦</span
+                        ><span data-i18n="ty.s2"></span>
+                    </div>
+                    <div>
+                        <span class="ic">💵</span
+                        ><span data-i18n="ty.s3"></span>
+                    </div>
+                </div>
+                <a class="btn" href="/" data-i18n="ty.cta"></a>
+            </div>
+        </main>
+        <div id="site-footer"></div>
+        <script src="/js/i18n.js"></script>
+        <script src="/js/app.js"></script>
+        <script>
+            const id = new URLSearchParams(location.search).get("id") || "";
+            document.getElementById("oid").textContent = /^RML-\d+$/.test(id)
+                ? id
+                : "—";
+        </script>
+    </body>
 </html>

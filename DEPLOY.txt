@@ -2,5 +2,13 @@ docker build -t ramla-matcha:latest .
 docker save ramla-matcha:latest | gzip > ramla-matcha.tar.gz
 scp ramla-matcha.tar.gz alcap:containers/ramla-matcha
 
+ssh alcap
+cd ~/containers/ramla-matcha/
 docker load < ramla-matcha.tar.gz
-docker compose up -d --force-recreate
+docker compose down
+docker compose up -d
+
+docker exec -it ramla-matcha sh
+docker logs -f ramla-matcha
+docker exec -it ramla-matcha env
+docker restart ramla-matcha

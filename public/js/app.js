@@ -1,126 +1,200 @@
 /* Ramla رملة Matcha — script commun à toutes les pages */
 (function () {
-  'use strict';
+  "use strict";
   const LS = {
-    get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } },
-    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* stockage indisponible */ } },
+    get(k, d) {
+      try {
+        const v = localStorage.getItem(k);
+        return v == null ? d : JSON.parse(v);
+      } catch {
+        return d;
+      }
+    },
+    set(k, v) {
+      try {
+        localStorage.setItem(k, JSON.stringify(v));
+      } catch {
+        /* stockage indisponible */
+      }
+    },
   };
   const R = (window.Ramla = {});
 
   /* ---------------- langue ---------------- */
-  let lang = LS.get('ramla_lang', null) || ((navigator.language || '').startsWith('ar') ? 'ar' : 'en');
-  if (!window.I18N[lang]) lang = 'en';
+  let lang =
+    LS.get("ramla_lang", null) ||
+    ((navigator.language || "").startsWith("ar") ? "ar" : "en");
+  if (!window.I18N[lang]) lang = "en";
   R.lang = () => lang;
-  R.t = (key) => (window.I18N[lang] && window.I18N[lang][key]) ?? window.I18N.en[key] ?? key;
+  R.t = (key) =>
+    (window.I18N[lang] && window.I18N[lang][key]) ?? window.I18N.en[key] ?? key;
   R.applyLang = function (root = document) {
     document.documentElement.lang = lang;
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-    root.querySelectorAll('[data-i18n]').forEach((el) => { el.innerHTML = R.t(el.dataset.i18n); });
-    root.querySelectorAll('[data-i18n-ph]').forEach((el) => { el.placeholder = R.t(el.dataset.i18nPh); });
-    root.querySelectorAll('[data-i18n-aria]').forEach((el) => { el.setAttribute('aria-label', R.t(el.dataset.i18nAria)); });
-    document.querySelectorAll('.lang-toggle button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+    root.querySelectorAll("[data-i18n]").forEach((el) => {
+      el.innerHTML = R.t(el.dataset.i18n);
+    });
+    root.querySelectorAll("[data-i18n-ph]").forEach((el) => {
+      el.placeholder = R.t(el.dataset.i18nPh);
+    });
+    root.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+      el.setAttribute("aria-label", R.t(el.dataset.i18nAria));
+    });
+    document
+      .querySelectorAll(".lang-toggle button")
+      .forEach((b) =>
+        b.setAttribute("aria-pressed", String(b.dataset.lang === lang)),
+      );
   };
   R.setLang = function (l) {
     if (l === lang || !window.I18N[l]) return;
-    lang = l; LS.set('ramla_lang', l);
+    lang = l;
+    LS.set("ramla_lang", l);
     R.applyLang();
-    document.dispatchEvent(new CustomEvent('langchange'));
+    document.dispatchEvent(new CustomEvent("langchange"));
   };
 
   /* ---------------- format ---------------- */
-  R.money = (n) => `${Math.round(n).toLocaleString('fr-FR').replace(/ | /g, ' ')} ${R.t('currency')}`;
-  R.esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  R.money = (n) =>
+    `${Math.round(n).toLocaleString("fr-FR").replace(/ | /g, " ")} ${R.t("currency")}`;
+  R.esc = (s) =>
+    String(s ?? "").replace(
+      /[&<>"']/g,
+      (c) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[c],
+    );
 
   /* ---------------- données boutique ---------------- */
   let shopPromise;
-  R.shop = () => (shopPromise ||= fetch('/api/shop').then((r) => { if (!r.ok) throw new Error('shop'); return r.json(); }));
+  R.shop = () =>
+    (shopPromise ||= fetch("/api/shop").then((r) => {
+      if (!r.ok) throw new Error("shop");
+      return r.json();
+    }));
   R.product = async (id) => (await R.shop()).products.find((p) => p.id === id);
   R.pname = (p) => p.name[lang] || p.name.en;
 
   // Les illustrations .svg sont insérées dans la page pour profiter des polices du site.
   const svgCache = {};
   R.visual = function (src, alt) {
-    if (!src.endsWith('.svg')) return `<img src="${R.esc(src)}" alt="${R.esc(alt)}" loading="lazy" decoding="async">`;
-    const id = 'v' + Math.random().toString(36).slice(2);
+    if (!src.endsWith(".svg"))
+      return `<img src="${R.esc(src)}" alt="${R.esc(alt)}" loading="lazy" decoding="async">`;
+    const id = "v" + Math.random().toString(36).slice(2);
     (svgCache[src] ||= fetch(src).then((r) => r.text())).then((txt) => {
       const el = document.getElementById(id);
-      if (el) el.outerHTML = txt.replace('<svg', `<svg aria-label="${R.esc(alt)}" preserveAspectRatio="xMidYMid slice"`);
+      if (el)
+        el.outerHTML = txt.replace(
+          "<svg",
+          `<svg aria-label="${R.esc(alt)}" preserveAspectRatio="xMidYMid slice"`,
+        );
     });
     return `<span id="${id}" style="display:block;width:100%;height:100%"></span>`;
   };
 
   /* ---------------- panier ---------------- */
   R.cart = {
-    items: () => LS.get('ramla_cart', []).filter((i) => i && i.id && i.qty > 0),
-    save(items) { LS.set('ramla_cart', items); R.cart.renderCount(true); document.dispatchEvent(new CustomEvent('cartchange')); },
+    items: () => LS.get("ramla_cart", []).filter((i) => i && i.id && i.qty > 0),
+    save(items) {
+      LS.set("ramla_cart", items);
+      R.cart.renderCount(true);
+      document.dispatchEvent(new CustomEvent("cartchange"));
+    },
     add(id, qty = 1) {
       const items = R.cart.items();
       const found = items.find((i) => i.id === id);
-      if (found) found.qty = Math.min(50, found.qty + qty); else items.push({ id, qty: Math.min(50, qty) });
+      if (found) found.qty = Math.min(50, found.qty + qty);
+      else items.push({ id, qty: Math.min(50, qty) });
       R.cart.save(items);
       R.toast();
     },
     set(id, qty) {
       let items = R.cart.items();
       if (qty <= 0) items = items.filter((i) => i.id !== id);
-      else { const f = items.find((i) => i.id === id); if (f) f.qty = Math.min(50, qty); }
+      else {
+        const f = items.find((i) => i.id === id);
+        if (f) f.qty = Math.min(50, qty);
+      }
       R.cart.save(items);
     },
-    clear() { LS.set('ramla_cart', []); R.cart.renderCount(); },
+    clear() {
+      LS.set("ramla_cart", []);
+      R.cart.renderCount();
+    },
     count: () => R.cart.items().reduce((s, i) => s + i.qty, 0),
     renderCount(bump) {
-      const el = document.querySelector('.cart-count');
+      const el = document.querySelector(".cart-count");
       if (!el) return;
       const n = R.cart.count();
       el.textContent = n;
-      el.classList.toggle('show', n > 0);
-      if (bump) { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+      el.classList.toggle("show", n > 0);
+      if (bump) {
+        el.classList.remove("bump");
+        void el.offsetWidth;
+        el.classList.add("bump");
+      }
     },
   };
 
   let toastTimer;
   R.toast = function () {
-    let el = document.querySelector('.toast');
+    let el = document.querySelector(".toast");
     if (!el) {
-      el = document.createElement('div');
-      el.className = 'toast'; el.setAttribute('role', 'status');
+      el = document.createElement("div");
+      el.className = "toast";
+      el.setAttribute("role", "status");
       document.body.appendChild(el);
     }
-    el.innerHTML = `<span>🍵 ${R.t('toast.added')}</span><a href="/cart.html">${R.t('toast.view')}</a>`;
-    requestAnimationFrame(() => el.classList.add('show'));
+    el.innerHTML = `<span>🍵 ${R.t("toast.added")}</span><a href="/cart.html">${R.t("toast.view")}</a>`;
+    requestAnimationFrame(() => el.classList.add("show"));
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
+    toastTimer = setTimeout(() => el.classList.remove("show"), 3200);
   };
 
   /* ---------------- carte produit ---------------- */
-  const TAGS = { 'matcha-30g': 'tag.bestseller', whisk: 'tag.essential', tote: 'tag.new', cap: 'tag.new' };
+  const TAGS = {
+    "matcha-30g": "tag.bestseller",
+    whisk: "tag.essential",
+    tote: "tag.new",
+    cap: "tag.new",
+  };
   R.productCard = function (p) {
-    const href = p.id === 'matcha-30g' ? '/shop.html' : '/accessories.html#' + p.id;
+    const href =
+      p.id === "matcha-30g" ? "/shop.html" : "/accessories.html#" + p.id;
     return `<article class="product-card reveal" id="card-${p.id}">
-      <a class="visual" href="${href}">${R.visual(p.image, R.pname(p))}<span class="tag" data-i18n="${TAGS[p.id] || 'tag.new'}">${R.t(TAGS[p.id] || 'tag.new')}</span></a>
+      <a class="visual" href="${href}">${R.visual(p.image, R.pname(p))}<span class="tag" data-i18n="${TAGS[p.id] || "tag.new"}">${R.t(TAGS[p.id] || "tag.new")}</span></a>
       <h3 data-pname="${p.id}">${R.esc(R.pname(p))}</h3>
-      <p class="desc" data-i18n="p.${p.id}.desc">${R.t('p.' + p.id + '.desc')}</p>
+      <p class="desc" data-i18n="p.${p.id}.desc">${R.t("p." + p.id + ".desc")}</p>
       <div class="row"><span class="price">${R.money(p.price)}</span>
-      <button class="add-mini" data-add="${p.id}" data-i18n="btn.add">${R.t('btn.add')}</button></div>
+      <button class="add-mini" data-add="${p.id}" data-i18n="btn.add">${R.t("btn.add")}</button></div>
     </article>`;
   };
   R.refreshProductNames = async function () {
     const shop = await R.shop();
-    document.querySelectorAll('[data-pname]').forEach((el) => {
+    document.querySelectorAll("[data-pname]").forEach((el) => {
       const p = shop.products.find((x) => x.id === el.dataset.pname);
       if (p) el.textContent = R.pname(p);
     });
-    document.querySelectorAll('[data-price]').forEach((el) => {
+    document.querySelectorAll("[data-price]").forEach((el) => {
       const p = shop.products.find((x) => x.id === el.dataset.price);
       if (p) el.textContent = R.money(p.price);
     });
   };
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-add]');
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-add]");
     if (!btn) return;
     R.cart.add(btn.dataset.add, 1);
-    btn.classList.add('done'); btn.textContent = R.t('btn.added');
-    setTimeout(() => { btn.classList.remove('done'); btn.textContent = R.t('btn.add'); }, 1600);
+    btn.classList.add("done");
+    btn.textContent = R.t("btn.added");
+    setTimeout(() => {
+      btn.classList.remove("done");
+      btn.textContent = R.t("btn.add");
+    }, 1600);
   });
 
   /* ---------------- header / footer ---------------- */
@@ -133,8 +207,8 @@
   R.icon = ICON;
   function renderChrome() {
     const page = document.body.dataset.page;
-    const cur = (p) => (p === page ? ' aria-current="page"' : '');
-    const header = document.getElementById('site-header');
+    const cur = (p) => (p === page ? ' aria-current="page"' : "");
+    const header = document.getElementById("site-header");
     if (header) {
       header.outerHTML = `
       <div class="announce" data-i18n="announce"></div>
@@ -142,9 +216,9 @@
         <div class="wrap header-inner">
           <button class="menu-btn" aria-expanded="false" data-i18n-aria="nav.menu">${ICON.menu}</button>
           <nav class="nav" id="main-nav">
-            <a href="/shop.html"${cur('shop')} data-i18n="nav.shop"></a>
-            <a href="/story.html"${cur('story')} data-i18n="nav.story"></a>
-            <a href="/accessories.html"${cur('accessories')} data-i18n="nav.accessories"></a>
+            <a href="/shop.html"${cur("shop")} data-i18n="nav.shop"></a>
+            <a href="/story.html"${cur("story")} data-i18n="nav.story"></a>
+            <a href="/accessories.html"${cur("accessories")} data-i18n="nav.accessories"></a>
           </nav>
           <a class="logo" href="/" aria-label="Ramla Matcha"><img class="logo-img" src="/img/logo.png" alt="Ramla رملة Matcha"></a>
           <div class="header-actions">
@@ -156,7 +230,7 @@
         </div>
       </header>`;
     }
-    const footer = document.getElementById('site-footer');
+    const footer = document.getElementById("site-footer");
     if (footer) {
       const year = new Date().getFullYear();
       footer.outerHTML = `
@@ -186,32 +260,45 @@
           <div class="footer-bottom"><span>© ${year} Ramla رملة Matcha. <span data-i18n="foot.rights"></span></span><span>@ramla.matchadz</span></div>
         </div>
       </footer>`;
-      R.shop().then((s) => {
-        const el = document.querySelector('[data-socials]');
-        if (el) el.innerHTML =
-          `<a href="https://instagram.com/${R.esc(s.instagram)}" target="_blank" rel="noopener" aria-label="Instagram">${ICON.ig}</a>` +
-          `<a href="https://tiktok.com/@${R.esc(s.tiktok)}" target="_blank" rel="noopener" aria-label="TikTok">${ICON.tt}</a>`;
-      }).catch(() => {});
+      R.shop()
+        .then((s) => {
+          const el = document.querySelector("[data-socials]");
+          if (el)
+            el.innerHTML =
+              `<a href="https://instagram.com/${R.esc(s.instagram)}" target="_blank" rel="noopener" aria-label="Instagram">${ICON.ig}</a>` +
+              `<a href="https://tiktok.com/@${R.esc(s.tiktok)}" target="_blank" rel="noopener" aria-label="TikTok">${ICON.tt}</a>`;
+        })
+        .catch(() => {});
     }
 
-    document.querySelectorAll('.lang-toggle button').forEach((b) => b.addEventListener('click', () => R.setLang(b.dataset.lang)));
-    const menuBtn = document.querySelector('.menu-btn');
-    const nav = document.getElementById('main-nav');
-    if (menuBtn && nav) menuBtn.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      menuBtn.setAttribute('aria-expanded', String(open));
-    });
-    const sh = document.querySelector('.site-header');
-    const onScroll = () => sh && sh.classList.toggle('scrolled', window.scrollY > 10);
-    window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+    document
+      .querySelectorAll(".lang-toggle button")
+      .forEach((b) =>
+        b.addEventListener("click", () => R.setLang(b.dataset.lang)),
+      );
+    const menuBtn = document.querySelector(".menu-btn");
+    const nav = document.getElementById("main-nav");
+    if (menuBtn && nav)
+      menuBtn.addEventListener("click", () => {
+        const open = nav.classList.toggle("open");
+        menuBtn.setAttribute("aria-expanded", String(open));
+      });
+    const sh = document.querySelector(".site-header");
+    const onScroll = () =>
+      sh && sh.classList.toggle("scrolled", window.scrollY > 10);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
   }
 
   /* ---------------- popup -15% ---------------- */
   function popup() {
-    if (LS.get('ramla_popup_done', false)) return;
-    if (['checkout', 'thanks'].includes(document.body.dataset.page)) return;
-    const m = document.createElement('div');
-    m.className = 'modal'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-labelledby', 'pop-title');
+    if (LS.get("ramla_popup_done", false)) return;
+    if (["checkout", "thanks"].includes(document.body.dataset.page)) return;
+    const m = document.createElement("div");
+    m.className = "modal";
+    m.setAttribute("role", "dialog");
+    m.setAttribute("aria-modal", "true");
+    m.setAttribute("aria-labelledby", "pop-title");
     m.innerHTML = `
       <div class="modal-backdrop"></div>
       <div class="modal-card">
@@ -236,62 +323,110 @@
         </div>
       </div>`;
     document.body.appendChild(m);
-    m.querySelectorAll('.modal-lang button').forEach((b) => b.addEventListener('click', () => R.setLang(b.dataset.lang)));
+    m.querySelectorAll(".modal-lang button").forEach((b) =>
+      b.addEventListener("click", () => R.setLang(b.dataset.lang)),
+    );
     R.applyLang(m);
     const close = () => {
-      m.classList.remove('open'); LS.set('ramla_popup_done', true);
-      document.removeEventListener('keydown', onKey);
+      m.classList.remove("open");
+      LS.set("ramla_popup_done", true);
+      document.removeEventListener("keydown", onKey);
       setTimeout(() => m.remove(), 500);
     };
-    const onKey = (e) => { if (e.key === 'Escape') close(); };
-    m.querySelector('.modal-close').addEventListener('click', close);
-    m.querySelector('.modal-backdrop').addEventListener('click', close);
-    document.addEventListener('keydown', onKey);
-    document.addEventListener('langchange', () => R.applyLang(m));
+    const onKey = (e) => {
+      if (e.key === "Escape") close();
+    };
+    m.querySelector(".modal-close").addEventListener("click", close);
+    m.querySelector(".modal-backdrop").addEventListener("click", close);
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("langchange", () => R.applyLang(m));
 
-    const form = m.querySelector('form');
-    form.addEventListener('submit', async (e) => {
+    const form = m.querySelector("form");
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const input = form.querySelector('input');
-      const msg = form.querySelector('.promo-msg');
-      const btn = form.querySelector('button');
+      const input = form.querySelector("input");
+      const msg = form.querySelector(".promo-msg");
+      const btn = form.querySelector("button");
       const email = input.value.trim();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { msg.textContent = R.t('pop.err'); input.focus(); return; }
-      msg.textContent = ''; btn.disabled = true; btn.textContent = R.t('pop.sending');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+        msg.textContent = R.t("pop.err");
+        input.focus();
+        return;
+      }
+      msg.textContent = "";
+      btn.disabled = true;
+      btn.textContent = R.t("pop.sending");
       try {
-        const r = await fetch('/api/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, lang: R.lang() }) });
+        const r = await fetch("/api/subscribe", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, lang: R.lang() }),
+        });
         const d = await r.json();
-        if (!r.ok) throw new Error(d.error || 'err');
-        LS.set('ramla_popup_done', true);
-        const ok = m.querySelector('.modal-success');
-        if (d.alreadyUsed) ok.innerHTML = `<h2>🌿</h2><p>${R.t('pop.used')}</p>`;
-        else if (d.code) { ok.innerHTML = `<h2>${R.t('pop.codeTitle')}</h2><p>${R.t('pop.codeText')}</p><div class="code" dir="ltr">${R.esc(d.code)}</div>`; LS.set('ramla_code', d.code); }
-        else ok.innerHTML = `<h2>${R.t('pop.okTitle')}</h2><p>${R.t('pop.okText')}</p>`;
-        ok.innerHTML += `<button class="btn" style="margin-top:8px">${R.t('pop.shop')}</button>`;
-        ok.querySelector('.btn').addEventListener('click', () => { close(); if (document.body.dataset.page !== 'shop') location.href = '/shop.html'; });
-        m.querySelector('.pop-form').hidden = true; ok.hidden = false;
+        if (!r.ok) throw new Error(d.error || "err");
+        LS.set("ramla_popup_done", true);
+        const ok = m.querySelector(".modal-success");
+        if (d.alreadyUsed)
+          ok.innerHTML = `<h2>🌿</h2><p>${R.t("pop.used")}</p>`;
+        else if (d.code) {
+          ok.innerHTML = `<h2>${R.t("pop.codeTitle")}</h2><p>${R.t("pop.codeText")}</p><div class="code" dir="ltr">${R.esc(d.code)}</div>`;
+          LS.set("ramla_code", d.code);
+        } else
+          ok.innerHTML = `<h2>${R.t("pop.okTitle")}</h2><p>${R.t("pop.okText")}</p>`;
+        ok.innerHTML += `<button class="btn" style="margin-top:8px">${R.t("pop.shop")}</button>`;
+        ok.querySelector(".btn").addEventListener("click", () => {
+          close();
+          if (document.body.dataset.page !== "shop")
+            location.href = "/shop.html";
+        });
+        m.querySelector(".pop-form").hidden = true;
+        ok.hidden = false;
       } catch {
-        msg.textContent = R.t('pop.err'); btn.disabled = false; btn.textContent = R.t('pop.cta');
+        msg.textContent = R.t("pop.err");
+        btn.disabled = false;
+        btn.textContent = R.t("pop.cta");
       }
     });
-    setTimeout(() => m.classList.add('open'), 1200);
+    setTimeout(() => m.classList.add("open"), 1200);
   }
 
   /* ---------------- apparition au scroll ---------------- */
   R.observe = function () {
-    if (!('IntersectionObserver' in window)) { document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in')); return; }
-    const io = new IntersectionObserver((entries) => entries.forEach((en) => {
-      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
-    }), { rootMargin: '0px 0px -8% 0px' });
-    document.querySelectorAll('.reveal:not(.in)').forEach((el) => io.observe(el));
+    if (!("IntersectionObserver" in window)) {
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => el.classList.add("in"));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((en) => {
+          if (en.isIntersecting) {
+            en.target.classList.add("in");
+            io.unobserve(en.target);
+          }
+        }),
+      { rootMargin: "0px 0px -8% 0px" },
+    );
+    document
+      .querySelectorAll(".reveal:not(.in)")
+      .forEach((el) => io.observe(el));
   };
 
   /* ---------------- démarrage ---------------- */
   renderChrome();
   R.applyLang();
   R.cart.renderCount();
-  document.addEventListener('langchange', R.refreshProductNames);
-  window.addEventListener('storage', (e) => { if (e.key === 'ramla_cart') R.cart.renderCount(); });
-  document.addEventListener('DOMContentLoaded', () => { R.observe(); popup(); });
-  if (document.readyState !== 'loading') { R.observe(); popup(); }
+  document.addEventListener("langchange", R.refreshProductNames);
+  window.addEventListener("storage", (e) => {
+    if (e.key === "ramla_cart") R.cart.renderCount();
+  });
+  document.addEventListener("DOMContentLoaded", () => {
+    R.observe();
+    popup();
+  });
+  if (document.readyState !== "loading") {
+    R.observe();
+    popup();
+  }
 })();
