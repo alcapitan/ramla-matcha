@@ -1,0 +1,91 @@
+name: CI/CD ramla-matcha
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-push:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build-and-push
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install cloudflared
+        run: |
+          curl -fsSL -o cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+          sudo dpkg -i cloudflared.deb
+          rm cloudflared.deb
+
+      - name: Configure SSH client
+        env:
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          CF_ID: ${{ secrets.CF_CLIENT_ID }}
+          CF_SECRET: ${{ secrets.CF_CLIENT_SECRET }}
+          HOST: ${{ secrets.SERVER_HOST }}
+          USER: ${{ secrets.SERVER_USER }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          cat <<EOF > ~/.ssh/config
+          Host $HOST
+              User $USER
+              IdentityFile ~/.ssh/id_rsa
+              StrictHostKeyChecking no
+              ProxyCommand cloudflared access ssh --hostname %h --service-token-id $CF_ID --service-token-secret $CF_SECRET
+          EOF
+
+      - name: Deploy via SSH and Docker Compose
+        env:
+          HOST: ${{ secrets.SERVER_HOST }}
+          ACTOR: ${{ github.actor }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ssh "$HOST" bash -s <<EOF
+            set -e
+            cd ~/containers/ramla-matcha/
+
+            # Connexion au registre GitHub pour pull l'image privée
+            echo "$TOKEN" | docker login ghcr.io -u "$ACTOR" --password-stdin
+
+            # Mise à jour et relance propre du conteneur
+            docker compose pull
+            docker compose up -d --remove-orphans
+            docker image prune -f
+          EOF

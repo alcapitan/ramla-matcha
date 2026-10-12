@@ -1,9 +1,6 @@
 services:
-  ramla:
-    image: ramla-matcha:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
+  ramla-matcha:
+    image: ghcr.io/alcapitan/ramla-matcha:latest
     container_name: ramla-matcha
     restart: unless-stopped
     env_file: .env
@@ -16,6 +13,7 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=gateway"
       - "traefik.http.routers.ramla.rule=Host(`ramla-matcha.com`)"
+      - "traefik.http.routers.ramla.tls.certresolver=letsencrypt"
       - "traefik.http.routers.ramla.entrypoints=websecure"
       - "traefik.http.routers.ramla.tls=true"
       - "traefik.http.services.ramla.loadbalancer.server.port=3000"
