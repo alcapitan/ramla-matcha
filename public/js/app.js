@@ -150,7 +150,7 @@
       el.setAttribute("role", "status");
       document.body.appendChild(el);
     }
-    el.innerHTML = `<span>🍵 ${R.t("toast.added")}</span><a href="/cart.html">${R.t("toast.view")}</a>`;
+    el.innerHTML = `<span>🍵 ${R.t("toast.added")}</span><a href="/cart">${R.t("toast.view")}</a>`;
     requestAnimationFrame(() => el.classList.add("show"));
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => el.classList.remove("show"), 3200);
@@ -164,8 +164,7 @@
     cap: "tag.new",
   };
   R.productCard = function (p) {
-    const href =
-      p.id === "matcha-30g" ? "/shop.html" : "/accessories.html#" + p.id;
+    const href = p.id === "matcha-30g" ? "/shop" : "/accessories#" + p.id;
     return `<article class="product-card reveal" id="card-${p.id}">
       <a class="visual" href="${href}">${R.visual(p.image, R.pname(p))}<span class="tag" data-i18n="${TAGS[p.id] || "tag.new"}">${R.t(TAGS[p.id] || "tag.new")}</span></a>
       <h3 data-pname="${p.id}">${R.esc(R.pname(p))}</h3>
@@ -216,16 +215,16 @@
         <div class="wrap header-inner">
           <button class="menu-btn" aria-expanded="false" data-i18n-aria="nav.menu">${ICON.menu}</button>
           <nav class="nav" id="main-nav">
-            <a href="/shop.html"${cur("shop")} data-i18n="nav.shop"></a>
-            <a href="/story.html"${cur("story")} data-i18n="nav.story"></a>
-            <a href="/accessories.html"${cur("accessories")} data-i18n="nav.accessories"></a>
+            <a href="/shop"${cur("shop")} data-i18n="nav.shop"></a>
+            <a href="/story"${cur("story")} data-i18n="nav.story"></a>
+            <a href="/accessories"${cur("accessories")} data-i18n="nav.accessories"></a>
           </nav>
           <a class="logo" href="/" aria-label="Ramla Matcha"><img class="logo-img" src="/img/logo.png" alt="Ramla رملة Matcha"></a>
           <div class="header-actions">
             <div class="lang-toggle" role="group" aria-label="Language">
               <button data-lang="en" aria-pressed="false">EN</button><button data-lang="ar" aria-pressed="false">ع</button>
             </div>
-            <a class="cart-btn" href="/cart.html" data-i18n-aria="nav.cart">${ICON.bag}<span class="cart-count">0</span></a>
+            <a class="cart-btn" href="/cart" data-i18n-aria="nav.cart">${ICON.bag}<span class="cart-count">0</span></a>
           </div>
         </div>
       </header>`;
@@ -244,10 +243,10 @@
             <div>
               <h4 data-i18n="foot.shop"></h4>
               <ul>
-                <li><a href="/shop.html" data-i18n="nav.shop"></a></li>
-                <li><a href="/accessories.html" data-i18n="nav.accessories"></a></li>
-                <li><a href="/story.html" data-i18n="nav.story"></a></li>
-                <li><a href="/cart.html" data-i18n="nav.cart"></a></li>
+                <li><a href="/shop" data-i18n="nav.shop"></a></li>
+                <li><a href="/accessories" data-i18n="nav.accessories"></a></li>
+                <li><a href="/story" data-i18n="nav.story"></a></li>
+                <li><a href="/cart" data-i18n="nav.cart"></a></li>
               </ul>
             </div>
             <div>
@@ -376,8 +375,7 @@
         ok.innerHTML += `<button class="btn" style="margin-top:8px">${R.t("pop.shop")}</button>`;
         ok.querySelector(".btn").addEventListener("click", () => {
           close();
-          if (document.body.dataset.page !== "shop")
-            location.href = "/shop.html";
+          if (document.body.dataset.page !== "shop") location.href = "/shop";
         });
         m.querySelector(".pop-form").hidden = true;
         ok.hidden = false;

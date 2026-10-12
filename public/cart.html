@@ -43,7 +43,7 @@
                         }))
                         .filter((i) => i.p);
                     if (!items.length) {
-                        root.innerHTML = `<div class="empty"><div class="icon">🍵</div><p class="muted">${R.t("cart.empty")}</p><a class="btn" href="/shop.html">${R.t("cart.emptyCta")}</a></div>`;
+                        root.innerHTML = `<div class="empty"><div class="icon">🍵</div><p class="muted">${R.t("cart.empty")}</p><a class="btn" href="/shop">${R.t("cart.emptyCta")}</a></div>`;
                         return;
                     }
                     const subtotal = items.reduce(
@@ -55,7 +55,7 @@
               .map(
                   (i) => `
             <div class="cart-line">
-              <a class="thumb" href="${i.id === "matcha-30g" ? "/shop.html" : "/accessories.html#" + i.id}">${R.visual(i.p.image, R.pname(i.p))}</a>
+              <a class="thumb" href="${i.id === "matcha-30g" ? "/shop" : "/accessories#" + i.id}">${R.visual(i.p.image, R.pname(i.p))}</a>
               <div>
                 <h3>${R.esc(R.pname(i.p))}</h3>
                 <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px">
@@ -67,14 +67,14 @@
             </div>`,
               )
               .join("")}
-            <p style="margin-top:22px"><a class="link-arrow" href="/shop.html">${R.t("cart.continue")}</a></p>
+            <p style="margin-top:22px"><a class="link-arrow" href="/shop">${R.t("cart.continue")}</a></p>
           </div>
           <aside class="summary">
             <h2>${R.t("cart.summary")}</h2>
             <div class="line"><span>${R.t("cart.subtotal")}</span><span>${R.money(subtotal)}</span></div>
             <div class="line"><span>${R.t("cart.shipping")}</span><span class="muted" style="font-family:inherit;font-size:.85rem">${R.t("cart.shippingNext")}</span></div>
             <div class="line total"><span>${R.t("cart.total")}</span><span>${R.money(subtotal)}</span></div>
-            <a class="btn block" style="margin-top:20px" href="/checkout.html">${R.t("cart.checkout")}</a>
+            <a class="btn block" style="margin-top:20px" href="/checkout">${R.t("cart.checkout")}</a>
             <p class="muted" style="font-size:.84rem;margin:14px 0 0;text-align:center">💵 ${R.t("cart.cod")}</p>
           </aside>
         </div>`;

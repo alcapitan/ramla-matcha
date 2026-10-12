@@ -133,14 +133,14 @@ function welcomeEmail(code, lang) {
     <p style="font-size:15px;line-height:1.6;margin:0 0 24px;color:#4a4a42">${t.p}</p>
     <div style="display:inline-block;border:1.5px dashed #1E4A2C;border-radius:12px;padding:16px 28px;font-family:'Courier New',monospace;font-size:24px;letter-spacing:3px;color:#1E4A2C;background:#fff">${esc(code)}</div>
     <p style="font-size:13px;color:#6b6b60;margin:18px 0 28px">${t.how}</p>
-    <a href="${SITE_URL}/shop.html" style="display:inline-block;background:#1E4A2C;color:#F8F4EC;text-decoration:none;padding:14px 34px;border-radius:999px;font-size:14px;letter-spacing:1px">${t.cta}</a>
+    <a href="${SITE_URL}/shop" style="display:inline-block;background:#1E4A2C;color:#F8F4EC;text-decoration:none;padding:14px 34px;border-radius:999px;font-size:14px;letter-spacing:1px">${t.cta}</a>
   </td></tr></table>
   <p style="font-size:12px;color:#8a8a7e;margin-top:18px">@${esc(shop.instagram)}</p>
   </td></tr></table></body></html>`;
   return {
     subject: t.sub,
     html,
-    text: `${t.hi}\n\n${t.p}\n\n${code}\n\n${t.how}\n${SITE_URL}/shop.html`,
+    text: `${t.hi}\n\n${t.p}\n\n${code}\n\n${t.how}\n${SITE_URL}/shop`,
   };
 }
 
@@ -217,6 +217,18 @@ const app = express();
 app.set("trust proxy", true);
 app.disable("x-powered-by");
 app.use(express.json({ limit: "50kb" }));
+// Redirection canonique : /page.html -> /page
+app.use((req, res, next) => {
+  if (req.path.endsWith(".html")) {
+    const cleanPath = req.path.replace(/\.html$/, "") || "/";
+    return res.redirect(
+      301,
+      cleanPath +
+        (req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : ""),
+    );
+  }
+  next();
+});
 app.use((req, res, next) => {
   res.set("X-Content-Type-Options", "nosniff");
   res.set("Referrer-Policy", "strict-origin-when-cross-origin");

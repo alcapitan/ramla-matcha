@@ -269,7 +269,7 @@
                         }))
                         .filter((i) => i.p);
                 if (!items().length) {
-                    location.replace("/cart.html");
+                    location.replace("/cart");
                     return;
                 }
 
@@ -300,7 +300,7 @@
                 function summary() {
                     const its = items();
                     if (!its.length) {
-                        location.replace("/cart.html");
+                        location.replace("/cart");
                         return;
                     }
                     $("mini-items").innerHTML = its
@@ -499,7 +499,7 @@
                             localStorage.removeItem("ramla_code");
                         } catch {}
                         location.href =
-                            "/thanks.html?id=" + encodeURIComponent(d.id);
+                            "/thanks?id=" + encodeURIComponent(d.id);
                     } catch (ex) {
                         err.textContent =
                             ex.message === "validation"
