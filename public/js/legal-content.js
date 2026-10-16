@@ -108,7 +108,7 @@ Phone: {{phone}} — WhatsApp: {{whatsapp}} — Email: {{email}}</p>
 <p>For any complaint, contact us on WhatsApp at {{whatsapp}} or at {{email}}, with your order number. We reply within seven (7) days.</p>
 
 <h2>12. Personal data</h2>
-<p>The data you give us is used only to process and deliver your order. See the <a href="/legal.html#privacy">privacy section of our legal notice</a>.</p>
+<p>The data you give us is used only to process and deliver your order. See the <a href="/legal#privacy">privacy section of our legal notice</a>.</p>
 
 <h2>13. Applicable law and disputes</h2>
 <p>These terms are governed by Algerian law. In case of a dispute, we will first look for an amicable solution with you. Failing that, the competent Algerian courts will have jurisdiction.</p>`,
@@ -221,7 +221,7 @@ Phone: {{phone}} — WhatsApp: {{whatsapp}} — Email: {{email}}</p>
 <p>لأي شكوى، تواصلي معنا عبر واتساب على {{whatsapp}} أو على {{email}} مع ذكر رقم الطلب. نردّ خلال سبعة (7) أيام.</p>
 
 <h2>12. البيانات الشخصية</h2>
-<p>تُستعمل البيانات التي تقدّمينها فقط لمعالجة طلبك وتوصيله. راجعي <a href="/legal.html#privacy">قسم حماية البيانات في الإشعار القانوني</a>.</p>
+<p>تُستعمل البيانات التي تقدّمينها فقط لمعالجة طلبك وتوصيله. راجعي <a href="/legal#privacy">قسم حماية البيانات في الإشعار القانوني</a>.</p>
 
 <h2>13. القانون المطبّق والنزاعات</h2>
 <p>تخضع هذه الشروط للقانون الجزائري. في حال وقوع نزاع، نبحث أولًا عن حلّ ودّي معك. وفي حال تعذّر ذلك، تختص المحاكم الجزائرية المختصة بالنظر فيه.</p>`,

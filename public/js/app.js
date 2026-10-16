@@ -253,10 +253,10 @@
             </div>
             <div>
               <h4 data-i18n="foot.info"></h4>
-              <ul><li data-i18n="foot.delivery"></li><li data-i18n="foot.payment"></li><li><a href="/terms.html" data-i18n="foot.terms"></a></li></ul>
+              <ul><li data-i18n="foot.delivery"></li><li data-i18n="foot.payment"></li><li><a href="/terms" data-i18n="foot.terms"></a></li></ul>
             </div>
           </div>
-          <div class="footer-bottom"><span>© ${year} Ramla رملة Matcha. <span data-i18n="foot.rights"></span></span><span class="footer-legal"><a href="/legal.html" data-i18n="foot.legal"></a><a href="/terms.html" data-i18n="foot.terms"></a><a href="/legal.html#privacy" data-i18n="foot.privacy"></a></span></div>
+          <div class="footer-bottom"><span>© ${year} Ramla رملة Matcha. <span data-i18n="foot.rights"></span></span><span class="footer-legal"><a href="/legal" data-i18n="foot.legal"></a><a href="/terms" data-i18n="foot.terms"></a><a href="/legal#privacy" data-i18n="foot.privacy"></a></span></div>
         </div>
       </footer>`;
       R.shop()

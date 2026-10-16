@@ -174,7 +174,7 @@ window.I18N = {
     "co.cod":
       "💵 Payment in cash on delivery. We will contact you on WhatsApp to confirm.",
     "co.terms":
-      'I have read and accept the <a href="/terms.html" target="_blank">terms of sale</a>.',
+      'I have read and accept the <a href="/terms" target="_blank">terms of sale</a>.',
     "co.termsErr": "Please accept the terms of sale to confirm your order.",
     "co.required": "Required",
     "co.phoneErr": "Enter a valid Algerian mobile number (05, 06 or 07).",
@@ -210,7 +210,7 @@ window.I18N = {
     "pop.cta": "Get my code",
     "pop.sending": "Sending…",
     "pop.fine":
-      'No spam. Just matcha, recipes and new drops. <a href="/legal.html#privacy" target="_blank">Privacy</a>',
+      'No spam. Just matcha, recipes and new drops. <a href="/legal#privacy" target="_blank">Privacy</a>',
     "pop.close": "Close",
     "pop.okTitle": "Check your inbox ✉️",
     "pop.okText": "Your 10% code is on its way. Enter it at checkout.",
@@ -404,7 +404,7 @@ window.I18N = {
     "co.sending": "جارٍ الإرسال…",
     "co.cod": "💵 الدفع نقدًا عند الاستلام. سنتواصل معكِ عبر واتساب للتأكيد.",
     "co.terms":
-      'قرأتُ <a href="/terms.html" target="_blank">الشروط العامة للبيع</a> وأوافق عليها.',
+      'قرأتُ <a href="/terms" target="_blank">الشروط العامة للبيع</a> وأوافق عليها.',
     "co.termsErr": "يرجى الموافقة على الشروط العامة للبيع لتأكيد طلبك.",
     "co.required": "حقل مطلوب",
     "co.phoneErr": "أدخلي رقم هاتف جزائري صحيح (05 أو 06 أو 07).",
@@ -439,7 +439,7 @@ window.I18N = {
     "pop.cta": "أريد رمزي",
     "pop.sending": "جارٍ الإرسال…",
     "pop.fine":
-      'لا رسائل مزعجة. فقط ماتشا ووصفات وإصدارات جديدة. <a href="/legal.html#privacy" target="_blank">حماية البيانات</a>',
+      'لا رسائل مزعجة. فقط ماتشا ووصفات وإصدارات جديدة. <a href="/legal#privacy" target="_blank">حماية البيانات</a>',
     "pop.close": "إغلاق",
     "pop.okTitle": "تفقّدي بريدك ✉️",
     "pop.okText": "رمز التخفيض 10٪ في الطريق إليكِ. أدخليه عند إتمام الطلب.",

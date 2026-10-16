@@ -82,7 +82,7 @@ const unsubToken = (email) =>
     .slice(0, 32);
 function unsubUrl(email, lang) {
   const e = Buffer.from(email).toString("base64url");
-  return `${SITE_URL}/unsubscribe.html?e=${e}&t=${unsubToken(email)}&l=${lang === "ar" ? "ar" : "en"}`;
+  return `${SITE_URL}/unsubscribe?e=${e}&t=${unsubToken(email)}&l=${lang === "ar" ? "ar" : "en"}`;
 }
 function checkUnsub(e, t) {
   let email = "";
@@ -166,15 +166,14 @@ function welcomeEmail(code, lang, email) {
   const html = `<!doctype html><html dir="${t.dir}"><body style="margin:0;background:#EFE9DD;font-family:Georgia,serif;color:#1B1B18">
   <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:40px 16px">
   <table width="520" cellpadding="0" cellspacing="0" style="max-width:520px;background:#F8F4EC;border-radius:18px;overflow:hidden">
-  <tr><td><img src="${SITE_URL}/img/hero.jpg" width="520" style="display:block;width:100%;height:260px;object-fit:cover" alt=""></td></tr>
+  <tr><td><img src="${SITE_URL}/img/hero.webp" width="520" style="display:block;width:100%;height:260px;object-fit:cover" alt=""></td></tr>
   <tr><td style="padding:36px 36px 40px;text-align:center">
-    <div style="font-size:28px;color:#1E4A2C">رملة</div>
-    <div style="font-size:30px;font-weight:bold;letter-spacing:2px;margin-bottom:22px">MATCHA</div>
+    <img style="height: 52px" src="/img/logo.png" alt="Ramla رملة Matcha logo">
     <h1 style="font-size:22px;font-weight:normal;margin:0 0 12px">${t.hi}</h1>
     <p style="font-size:15px;line-height:1.6;margin:0 0 24px;color:#4a4a42">${t.p}</p>
     <div style="display:inline-block;border:1.5px dashed #1E4A2C;border-radius:12px;padding:16px 28px;font-family:'Courier New',monospace;font-size:24px;letter-spacing:3px;color:#1E4A2C;background:#fff">${esc(code)}</div>
     <p style="font-size:13px;color:#6b6b60;margin:18px 0 28px">${t.how}</p>
-    <a href="${SITE_URL}/shop.html" style="display:inline-block;background:#1E4A2C;color:#F8F4EC;text-decoration:none;padding:14px 34px;border-radius:999px;font-size:14px;letter-spacing:1px">${t.cta}</a>
+    <a href="${SITE_URL}/shop" style="display:inline-block;background:#1E4A2C;color:#F8F4EC;text-decoration:none;padding:14px 34px;border-radius:999px;font-size:14px;letter-spacing:1px">${t.cta}</a>
   </td></tr></table>
   <p style="font-size:12px;color:#8a8a7e;margin-top:18px">@${esc(shop.instagram)}</p>
   <p style="font-size:11px;line-height:1.6;color:#8a8a7e;margin:6px 0 0">${t.why}<br>
@@ -183,7 +182,7 @@ function welcomeEmail(code, lang, email) {
   return {
     subject: t.sub,
     html,
-    text: `${t.hi}\n\n${t.p}\n\n${code}\n\n${t.how}\n${SITE_URL}/shop.html\n\n--\n${t.why}\n${t.unsub}: ${unsub}`,
+    text: `${t.hi}\n\n${t.p}\n\n${code}\n\n${t.how}\n${SITE_URL}/shop\n\n--\n${t.why}\n${t.unsub}: ${unsub}`,
     // Bouton « Se désabonner » natif de Gmail / Yahoo / Apple Mail (désinscription en un clic)
     headers: {
       "List-Unsubscribe": `<${unsub}>`,
@@ -265,15 +264,18 @@ const app = express();
 app.set("trust proxy", true);
 app.disable("x-powered-by");
 app.use(express.json({ limit: "50kb" }));
-// Redirection canonique : /page.html -> /page
+// Redirection canonique : /page.html -> /page  (GET/HEAD uniquement)
 app.use((req, res, next) => {
-  if (req.path.endsWith(".html")) {
-    const cleanPath = req.path.replace(/\.html$/, "") || "/";
-    return res.redirect(
-      301,
-      cleanPath +
-        (req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : ""),
-    );
+  if (
+    (req.method === "GET" || req.method === "HEAD") &&
+    req.path.endsWith(".html")
+  ) {
+    let cleanPath = req.path.replace(/\.html$/, "");
+    if (cleanPath === "/index" || cleanPath === "") cleanPath = "/";
+    const query = req.url.includes("?")
+      ? req.url.slice(req.url.indexOf("?"))
+      : "";
+    return res.redirect(301, cleanPath + query);
   }
   next();
 });
@@ -471,7 +473,7 @@ async function doUnsubscribe(req, res) {
   res.json({ ok: true });
 }
 app.post("/api/unsubscribe", rateLimit(20, 10 * 60 * 1000), doUnsubscribe);
-app.post("/unsubscribe.html", rateLimit(20, 10 * 60 * 1000), doUnsubscribe);
+app.post("/unsubscribe", rateLimit(20, 10 * 60 * 1000), doUnsubscribe);
 
 function adminAuth(req, res, next) {
   if (!ADMIN_PASSWORD)
