@@ -202,7 +202,7 @@
                     <div class="promo">
                         <input
                             id="promo"
-                            placeholder="RAMLA15-XXXXX"
+                            placeholder="RAMLA10-XXXXX"
                             dir="ltr"
                             autocomplete="off"
                             maxlength="30"
@@ -229,11 +229,17 @@
                         <span data-i18n="cart.total"></span
                         ><span id="sum-total"></span>
                     </div>
+                    <label class="terms-check" id="terms-wrap"
+                        ><input
+                            type="checkbox"
+                            id="acceptTerms"
+                            required /><span data-i18n="co.terms"></span
+                    ></label>
                     <button
                         class="btn block"
                         type="submit"
                         id="submit"
-                        style="margin-top: 20px"
+                        style="margin-top: 14px"
                         data-i18n="co.confirm"
                     ></button>
                     <p
@@ -394,6 +400,9 @@
                         "email",
                         !!em && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em),
                     );
+                    const t = $("acceptTerms").checked;
+                    $("terms-wrap").classList.toggle("invalid", !t);
+                    if (!t) ok = false;
                     return ok;
                 }
 
@@ -426,6 +435,9 @@
                     const f = e.target.closest(".field.invalid");
                     if (f) f.classList.remove("invalid");
                 });
+                $("acceptTerms").addEventListener("change", () =>
+                    $("terms-wrap").classList.remove("invalid"),
+                );
                 document.addEventListener("langchange", () => {
                     wilayas();
                     summary();
@@ -438,7 +450,9 @@
                     const err = $("form-error");
                     err.classList.remove("show");
                     if (!validate()) {
-                        err.textContent = R.t("co.fixErrors");
+                        err.textContent = $("acceptTerms").checked
+                            ? R.t("co.fixErrors")
+                            : R.t("co.termsErr");
                         err.classList.add("show");
                         document
                             .querySelector(
@@ -463,6 +477,7 @@
                         },
                         wilaya: $("wilaya").value,
                         deliveryType: form.deliveryType.value,
+                        acceptTerms: $("acceptTerms").checked,
                         items: R.cart
                             .items()
                             .map(({ id, qty }) => ({ id, qty })),

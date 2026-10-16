@@ -219,12 +219,13 @@
             <a href="/story"${cur("story")} data-i18n="nav.story"></a>
             <a href="/accessories"${cur("accessories")} data-i18n="nav.accessories"></a>
           </nav>
-          <a class="logo" href="/" aria-label="Ramla Matcha"><img class="logo-img" src="/img/logo.png" alt="Ramla رملة Matcha"></a>
+          <a class="logo" href="/" aria-label="Ramla Matcha"><img class="logo-img logo-light" src="/img/logo.png" alt="Ramla رملة Matcha"><img class="logo-img logo-dark" src="/img/logo-darkmode.png" alt="Ramla رملة Matcha"></a>
           <div class="header-actions">
             <div class="lang-toggle" role="group" aria-label="Language">
               <button data-lang="en" aria-pressed="false">EN</button><button data-lang="ar" aria-pressed="false">ع</button>
             </div>
             <a class="cart-btn" href="/cart" data-i18n-aria="nav.cart">${ICON.bag}<span class="cart-count">0</span></a>
+            <button class="theme-btn" type="button" data-i18n-aria="nav.theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
           </div>
         </div>
       </header>`;
@@ -238,7 +239,8 @@
           <div class="footer-grid">
             <div>
               <a class="logo" href="/"><img class="logo-img" src="/img/logo-white.png" alt="Ramla رملة Matcha"></a>
-              <p class="footer-tagline" data-i18n="foot.tagline"></p>
+              <h4 style="margin-top:22px" data-i18n="foot.follow"></h4>
+              <div class="socials" data-socials></div>
             </div>
             <div>
               <h4 data-i18n="foot.shop"></h4>
@@ -251,12 +253,10 @@
             </div>
             <div>
               <h4 data-i18n="foot.info"></h4>
-              <ul><li data-i18n="foot.delivery"></li><li data-i18n="foot.payment"></li></ul>
-              <h4 style="margin-top:22px" data-i18n="foot.follow"></h4>
-              <div class="socials" data-socials></div>
+              <ul><li data-i18n="foot.delivery"></li><li data-i18n="foot.payment"></li><li><a href="/terms.html" data-i18n="foot.terms"></a></li></ul>
             </div>
           </div>
-          <div class="footer-bottom"><span>© ${year} Ramla رملة Matcha. <span data-i18n="foot.rights"></span></span><span>@ramla.matchadz</span></div>
+          <div class="footer-bottom"><span>© ${year} Ramla رملة Matcha. <span data-i18n="foot.rights"></span></span><span class="footer-legal"><a href="/legal.html" data-i18n="foot.legal"></a><a href="/terms.html" data-i18n="foot.terms"></a><a href="/legal.html#privacy" data-i18n="foot.privacy"></a></span></div>
         </div>
       </footer>`;
       R.shop()
@@ -289,7 +289,7 @@
     onScroll();
   }
 
-  /* ---------------- popup -15% ---------------- */
+  /* ---------------- popup -10% ---------------- */
   function popup() {
     if (LS.get("ramla_popup_done", false)) return;
     if (["checkout", "thanks"].includes(document.body.dataset.page)) return;
@@ -427,4 +427,32 @@
     R.observe();
     popup();
   }
+
+  /* ---------------- mode sombre ---------------- */
+  const darkQuery = window.matchMedia
+    ? window.matchMedia("(prefers-color-scheme: dark)")
+    : null;
+  R.isDark = () => {
+    const t = document.documentElement.dataset.theme;
+    return t ? t === "dark" : !!(darkQuery && darkQuery.matches);
+  };
+  function applyTheme(t) {
+    if (t === "dark" || t === "light")
+      document.documentElement.dataset.theme = t;
+    else delete document.documentElement.dataset.theme; // suit le réglage de l'appareil
+    document
+      .querySelectorAll('meta[name="theme-color"]')
+      .forEach((m) => (m.content = R.isDark() ? "#12150F" : "#EFE9DD"));
+  }
+  applyTheme(LS.get("ramla_theme", null));
+  if (darkQuery && darkQuery.addEventListener)
+    darkQuery.addEventListener("change", () =>
+      applyTheme(LS.get("ramla_theme", null)),
+    );
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const next = R.isDark() ? "light" : "dark";
+    LS.set("ramla_theme", next);
+    applyTheme(next);
+  });
 })();

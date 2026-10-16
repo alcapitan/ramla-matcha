@@ -2,12 +2,13 @@
    Pour modifier un texte : change la valeur dans les deux langues. */
 window.I18N = {
   en: {
-    announce: "Cash on delivery · 58 wilayas · 15% off your first order",
+    announce: "Cash on delivery · 58 wilayas · 10% off your first order",
     "nav.shop": "Shop",
     "nav.story": "Our Story",
     "nav.accessories": "Accessories",
     "nav.cart": "Cart",
     "nav.menu": "Menu",
+    "nav.theme": "Light / dark mode",
 
     "hero.eyebrow": "Ceremonial grade · Lab-tested",
     "hero.title": 'Matcha with the <em class="accent">soul</em> of the desert',
@@ -109,10 +110,16 @@ window.I18N = {
     "story.name.p":
       "We wanted a name that came from home. Sand is the desert, but it’s also a texture: fine, soft, slipping through your fingers. Just like a good matcha powder. Ramla came to us pretty quickly.",
     "story.promise.t": "What we can promise you",
+    "story.promise.1.t": "Carefully Selected",
+    "story.promise.2.t": "Quality You Can See",
+    "story.promise.3.t": "Every Detail Matters",
     "story.promise.1":
-      "One matcha only: the one we chose after all those tests.",
-    "story.promise.2": "A real person on the other end of WhatsApp.",
-    "story.quote": "The taste of the desert, the strength of matcha.",
+      "Every matcha we offer is chosen with care and high standards.",
+    "story.promise.2":
+      "A vibrant green colour, a delicate taste and quality in every cup.",
+    "story.promise.3":
+      "From our packaging to your first sip, every detail is thoughtfully considered.",
+    "story.quote": "The soul of the desert, the strength of matcha.",
     "story.cta": "Taste Ramla",
 
     "accp.eyebrow": "Accessories",
@@ -157,15 +164,18 @@ window.I18N = {
     "co.notes": "Note (optional)",
     "co.promo": "Discount code",
     "co.apply": "Apply",
-    "co.promoOk": "Code applied: −15%",
+    "co.promoOk": "Code applied: −10%",
     "co.promoUnknown": "This code is not valid.",
     "co.promoUsed": "This code has already been used.",
-    "co.discount": "Discount (15%)",
+    "co.discount": "Discount (10%)",
     "co.pickWilaya": "Choose your wilaya",
     "co.confirm": "Confirm my order",
     "co.sending": "Sending…",
     "co.cod":
       "💵 Payment in cash on delivery. We will contact you on WhatsApp to confirm.",
+    "co.terms":
+      'I have read and accept the <a href="/terms.html" target="_blank">terms of sale</a>.',
+    "co.termsErr": "Please accept the terms of sale to confirm your order.",
     "co.required": "Required",
     "co.phoneErr": "Enter a valid Algerian mobile number (05, 06 or 07).",
     "co.emailErr": "Invalid email address.",
@@ -180,18 +190,30 @@ window.I18N = {
     "ty.s3": "You pay in cash when it arrives.",
     "ty.cta": "Back to the shop",
 
-    "pop.big": "15%",
+    "unsub.title": "Unsubscribe",
+    "unsub.text":
+      "You will no longer receive news from Ramla by email. Your discount code stays valid.",
+    "unsub.btn": "Confirm unsubscription",
+    "unsub.okTitle": "You are unsubscribed",
+    "unsub.okText":
+      "You will no longer receive our emails. You can sign up again at any time on the website.",
+    "unsub.badTitle": "Invalid link",
+    "unsub.badText":
+      "This link is not valid. Contact us on WhatsApp or by email and we will remove you from the list.",
+
+    "pop.big": "10%",
     "pop.off": "off",
     "pop.title": "Join the Ramla community",
     "pop.text":
-      "Enter your email and receive your 15% discount code for your first order.",
+      "Enter your email and receive your 10% discount code for your first order.",
     "pop.email": "Your email address",
     "pop.cta": "Get my code",
     "pop.sending": "Sending…",
-    "pop.fine": "No spam. Just matcha, recipes and new drops.",
+    "pop.fine":
+      'No spam. Just matcha, recipes and new drops. <a href="/legal.html#privacy" target="_blank">Privacy</a>',
     "pop.close": "Close",
     "pop.okTitle": "Check your inbox ✉️",
-    "pop.okText": "Your 15% code is on its way. Enter it at checkout.",
+    "pop.okText": "Your 10% code is on its way. Enter it at checkout.",
     "pop.codeTitle": "Here is your code",
     "pop.codeText": "Copy it and enter it at checkout:",
     "pop.used":
@@ -199,25 +221,27 @@ window.I18N = {
     "pop.err": "Please enter a valid email address.",
     "pop.shop": "Start shopping",
 
-    "foot.tagline":
-      "Ceremonial matcha with the soul of the Algerian desert. Delivered in 58 wilayas.",
     "foot.shop": "Shop",
     "foot.info": "Information",
     "foot.delivery": "Delivery: 58 wilayas",
     "foot.payment": "Payment: cash on delivery",
     "foot.rights": "All rights reserved.",
     "foot.follow": "Follow us",
+    "foot.legal": "Legal notice",
+    "foot.terms": "Terms of sale",
+    "foot.privacy": "Privacy",
 
     currency: "DA",
   },
 
   ar: {
-    announce: "الدفع عند الاستلام · 58 ولاية · خصم 15٪ على طلبك الأول",
+    announce: "الدفع عند الاستلام · 58 ولاية · خصم 10٪ على طلبك الأول",
     "nav.shop": "المتجر",
     "nav.story": "قصتنا",
     "nav.accessories": "الإكسسوارات",
     "nav.cart": "السلة",
     "nav.menu": "القائمة",
+    "nav.theme": "الوضع الفاتح / الداكن",
 
     "hero.eyebrow": "درجة سيريمونيال · مُختبَر مخبريًا",
     "hero.title": 'ماتشا بـ<em class="accent">روح</em> الصحراء',
@@ -319,9 +343,15 @@ window.I18N = {
     "story.name.p":
       "أردنا اسمًا نابعًا من أرضنا. الرمل هو الصحراء، لكنّه أيضًا ملمس: ناعم، خفيف، ينساب بين الأصابع. تمامًا مثل مسحوق ماتشا جيّد. فرض اسم «رملة» نفسه بسرعة.",
     "story.promise.t": "ما يمكننا أن نعدك به",
+    "story.promise.1.t": "اختيار بعناية",
+    "story.promise.2.t": "جودة تلاحظونها",
+    "story.promise.3.t": "كل تفصيل له قيمته",
     "story.promise.1":
-      "ماتشا واحدة فقط: تلك التي اخترناها بعد كلّ هذه الاختبارات.",
-    "story.promise.2": "شخص حقيقي على الطرف الآخر من واتساب.",
+      "نختار الماتشا بعناية فائقة، وفق معايير دقيقة تضمن الجودة التي نطمح إلى تقديمها لكم.",
+    "story.promise.2":
+      "لون أخضر غني، ومذاق متوازن، وجودة تستمتعون بها في كل كوب.",
+    "story.promise.3":
+      "من تصميم العبوة إلى أول رشفة، نهتم بكل تفصيل لنمنحكم تجربة تليق بكم.",
     "story.quote": "مذاق الصحراء، وقوّة الماتشا.",
     "story.cta": "تذوّقي رملة",
 
@@ -365,14 +395,17 @@ window.I18N = {
     "co.notes": "ملاحظة (اختياري)",
     "co.promo": "رمز التخفيض",
     "co.apply": "تطبيق",
-    "co.promoOk": "تم تطبيق الرمز: ‎−15٪",
+    "co.promoOk": "تم تطبيق الرمز: ‎−10٪",
     "co.promoUnknown": "هذا الرمز غير صالح.",
     "co.promoUsed": "تم استعمال هذا الرمز من قبل.",
-    "co.discount": "التخفيض (15٪)",
+    "co.discount": "التخفيض (10٪)",
     "co.pickWilaya": "اختاري ولايتك",
     "co.confirm": "تأكيد طلبي",
     "co.sending": "جارٍ الإرسال…",
     "co.cod": "💵 الدفع نقدًا عند الاستلام. سنتواصل معكِ عبر واتساب للتأكيد.",
+    "co.terms":
+      'قرأتُ <a href="/terms.html" target="_blank">الشروط العامة للبيع</a> وأوافق عليها.',
+    "co.termsErr": "يرجى الموافقة على الشروط العامة للبيع لتأكيد طلبك.",
     "co.required": "حقل مطلوب",
     "co.phoneErr": "أدخلي رقم هاتف جزائري صحيح (05 أو 06 أو 07).",
     "co.emailErr": "بريد إلكتروني غير صالح.",
@@ -387,31 +420,44 @@ window.I18N = {
     "ty.s3": "تدفعين نقدًا عند الاستلام.",
     "ty.cta": "العودة إلى المتجر",
 
-    "pop.big": "15٪",
+    "unsub.title": "إلغاء الاشتراك",
+    "unsub.text":
+      "لن تصلك أخبار رملة عبر البريد الإلكتروني بعد الآن. يبقى رمز التخفيض الخاص بك صالحًا.",
+    "unsub.btn": "تأكيد إلغاء الاشتراك",
+    "unsub.okTitle": "تم إلغاء اشتراكك",
+    "unsub.okText":
+      "لن تصلك رسائلنا بعد الآن. يمكنك التسجيل من جديد في أي وقت عبر الموقع.",
+    "unsub.badTitle": "رابط غير صالح",
+    "unsub.badText":
+      "هذا الرابط غير صالح. تواصلي معنا عبر واتساب أو البريد الإلكتروني وسنحذفك من القائمة.",
+
+    "pop.big": "10٪",
     "pop.off": "تخفيض",
     "pop.title": "انضمّي إلى مجتمع رملة",
-    "pop.text": "أدخلي بريدك الإلكتروني واحصلي على رمز تخفيض 15٪ لطلبك الأول.",
+    "pop.text": "أدخلي بريدك الإلكتروني واحصلي على رمز تخفيض 10٪ لطلبك الأول.",
     "pop.email": "بريدك الإلكتروني",
     "pop.cta": "أريد رمزي",
     "pop.sending": "جارٍ الإرسال…",
-    "pop.fine": "لا رسائل مزعجة. فقط ماتشا ووصفات وإصدارات جديدة.",
+    "pop.fine":
+      'لا رسائل مزعجة. فقط ماتشا ووصفات وإصدارات جديدة. <a href="/legal.html#privacy" target="_blank">حماية البيانات</a>',
     "pop.close": "إغلاق",
     "pop.okTitle": "تفقّدي بريدك ✉️",
-    "pop.okText": "رمز التخفيض 15٪ في الطريق إليكِ. أدخليه عند إتمام الطلب.",
+    "pop.okText": "رمز التخفيض 10٪ في الطريق إليكِ. أدخليه عند إتمام الطلب.",
     "pop.codeTitle": "هذا رمزك",
     "pop.codeText": "انسخيه وأدخليه عند إتمام الطلب:",
     "pop.used": "لقد استعملتِ رمز الترحيب من قبل. شكرًا لأنكِ جزء من المجتمع!",
     "pop.err": "يرجى إدخال بريد إلكتروني صحيح.",
     "pop.shop": "ابدئي التسوّق",
 
-    "foot.tagline":
-      "ماتشا سيريمونيال بروح الصحراء الجزائرية. التوصيل إلى 58 ولاية.",
     "foot.shop": "المتجر",
     "foot.info": "معلومات",
     "foot.delivery": "التوصيل: 58 ولاية",
     "foot.payment": "الدفع: عند الاستلام",
     "foot.rights": "جميع الحقوق محفوظة.",
     "foot.follow": "تابعينا",
+    "foot.legal": "الإشعار القانوني",
+    "foot.terms": "الشروط العامة للبيع",
+    "foot.privacy": "حماية البيانات",
 
     currency: "د.ج",
   },

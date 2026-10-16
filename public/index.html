@@ -231,8 +231,8 @@
             <section
                 class="section"
                 style="
-                    background: var(--matcha);
-                    color: var(--ivory);
+                    background: var(--deep);
+                    color: var(--on-dark);
                     text-align: center;
                 "
             >
@@ -271,7 +271,10 @@
                 async function products() {
                     const shop = await R.shop();
                     document.getElementById("home-products").innerHTML =
-                        shop.products.map(R.productCard).join("");
+                        shop.products
+                            .filter((p) => p.id !== "matcha-30g")
+                            .map(R.productCard)
+                            .join("");
                     R.refreshProductNames();
                     R.observe();
                 }

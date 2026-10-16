@@ -2,7 +2,7 @@
 /**
  * Ramla رملة Matcha — serveur de la boutique.
  * - Sert le site statique (public/)
- * - Newsletter : envoie un code -15% unique par e-mail
+ * - Newsletter : envoie un code -10% unique par e-mail
  * - Commandes : paiement à la livraison, enregistrées dans DATA_DIR/orders.json
  *   + e-mail de notification à OWNER_EMAIL
  * - /admin : liste des commandes avec bouton WhatsApp (protégé par ADMIN_PASSWORD)
@@ -65,6 +65,42 @@ function makeStore(file, initial) {
 }
 const subscribers = makeStore("subscribers.json", {}); // email -> { code, lang, createdAt, usedBy }
 const orders = makeStore("orders.json", { seq: 0, list: [] });
+/* ---------- désinscription newsletter ---------- */
+// Clé secrète pour signer les liens de désinscription (créée automatiquement, gardée dans /data).
+const SECRET_FILE = path.join(DATA_DIR, "secret.key");
+if (!fs.existsSync(SECRET_FILE))
+  fs.writeFileSync(SECRET_FILE, crypto.randomBytes(32).toString("hex"), {
+    mode: 0o600,
+  });
+const APP_SECRET =
+  process.env.APP_SECRET || fs.readFileSync(SECRET_FILE, "utf8").trim();
+const unsubToken = (email) =>
+  crypto
+    .createHmac("sha256", APP_SECRET)
+    .update("unsub:" + email)
+    .digest("base64url")
+    .slice(0, 32);
+function unsubUrl(email, lang) {
+  const e = Buffer.from(email).toString("base64url");
+  return `${SITE_URL}/unsubscribe.html?e=${e}&t=${unsubToken(email)}&l=${lang === "ar" ? "ar" : "en"}`;
+}
+function checkUnsub(e, t) {
+  let email = "";
+  try {
+    email = Buffer.from(String(e || ""), "base64url")
+      .toString("utf8")
+      .toLowerCase();
+  } catch {
+    return null;
+  }
+  const good = Buffer.from(unsubToken(email));
+  const given = Buffer.from(String(t || ""));
+  return email &&
+    good.length === given.length &&
+    crypto.timingSafeEqual(good, given)
+    ? email
+    : null;
+}
 
 /* ---------- e-mail ---------- */
 const mailer = SMTP_READY
@@ -103,29 +139,34 @@ const esc = (s) =>
   );
 const fmt = (n) => `${Number(n).toLocaleString("fr-FR").replace(/ /g, " ")} DA`;
 
-function welcomeEmail(code, lang) {
+function welcomeEmail(code, lang, email) {
   const ar = lang === "ar";
   const t = ar
     ? {
-        sub: "هديتك من رملة: خصم 15٪ 🍵",
+        sub: "هديتك من رملة: خصم 10٪ 🍵",
         hi: "مرحبًا بكِ في مجتمع رملة",
-        p: "شكرًا لانضمامك إلينا. هذا رمزك للحصول على خصم 15٪ على طلبك الأول:",
+        p: "شكرًا لانضمامك إلينا. هذا رمزك للحصول على خصم 10٪ على طلبك الأول:",
         how: "أدخلي الرمز في صفحة الطلب.",
         cta: "تسوّقي الآن",
         dir: "rtl",
+        why: "تصلك هذه الرسالة لأنكِ سجّلتِ في موقع رملة.",
+        unsub: "إلغاء الاشتراك",
       }
     : {
-        sub: "Your Ramla gift: 15% off 🍵",
+        sub: "Your Ramla gift: 10% off 🍵",
         hi: "Welcome to the Ramla community",
-        p: "Thank you for joining us. Here is your code for 15% off your first order:",
+        p: "Thank you for joining us. Here is your code for 10% off your first order:",
         how: "Enter it at checkout.",
         cta: "Shop now",
         dir: "ltr",
+        why: "You are receiving this email because you signed up on the Ramla website.",
+        unsub: "Unsubscribe",
       };
+  const unsub = unsubUrl(email, lang);
   const html = `<!doctype html><html dir="${t.dir}"><body style="margin:0;background:#EFE9DD;font-family:Georgia,serif;color:#1B1B18">
   <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:40px 16px">
   <table width="520" cellpadding="0" cellspacing="0" style="max-width:520px;background:#F8F4EC;border-radius:18px;overflow:hidden">
-  <tr><td><img src="${SITE_URL}/img/hero.webp" width="520" style="display:block;width:100%;height:260px;object-fit:cover" alt=""></td></tr>
+  <tr><td><img src="${SITE_URL}/img/hero.jpg" width="520" style="display:block;width:100%;height:260px;object-fit:cover" alt=""></td></tr>
   <tr><td style="padding:36px 36px 40px;text-align:center">
     <div style="font-size:28px;color:#1E4A2C">رملة</div>
     <div style="font-size:30px;font-weight:bold;letter-spacing:2px;margin-bottom:22px">MATCHA</div>
@@ -133,14 +174,21 @@ function welcomeEmail(code, lang) {
     <p style="font-size:15px;line-height:1.6;margin:0 0 24px;color:#4a4a42">${t.p}</p>
     <div style="display:inline-block;border:1.5px dashed #1E4A2C;border-radius:12px;padding:16px 28px;font-family:'Courier New',monospace;font-size:24px;letter-spacing:3px;color:#1E4A2C;background:#fff">${esc(code)}</div>
     <p style="font-size:13px;color:#6b6b60;margin:18px 0 28px">${t.how}</p>
-    <a href="${SITE_URL}/shop" style="display:inline-block;background:#1E4A2C;color:#F8F4EC;text-decoration:none;padding:14px 34px;border-radius:999px;font-size:14px;letter-spacing:1px">${t.cta}</a>
+    <a href="${SITE_URL}/shop.html" style="display:inline-block;background:#1E4A2C;color:#F8F4EC;text-decoration:none;padding:14px 34px;border-radius:999px;font-size:14px;letter-spacing:1px">${t.cta}</a>
   </td></tr></table>
   <p style="font-size:12px;color:#8a8a7e;margin-top:18px">@${esc(shop.instagram)}</p>
+  <p style="font-size:11px;line-height:1.6;color:#8a8a7e;margin:6px 0 0">${t.why}<br>
+    <a href="${esc(unsub)}" style="color:#8a8a7e;text-decoration:underline">${t.unsub}</a></p>
   </td></tr></table></body></html>`;
   return {
     subject: t.sub,
     html,
-    text: `${t.hi}\n\n${t.p}\n\n${code}\n\n${t.how}\n${SITE_URL}/shop`,
+    text: `${t.hi}\n\n${t.p}\n\n${code}\n\n${t.how}\n${SITE_URL}/shop.html\n\n--\n${t.why}\n${t.unsub}: ${unsub}`,
+    // Bouton « Se désabonner » natif de Gmail / Yahoo / Apple Mail (désinscription en un clic)
+    headers: {
+      "List-Unsubscribe": `<${unsub}>`,
+      "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+    },
   };
 }
 
@@ -184,7 +232,7 @@ function newCode() {
   const alphabet = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
   let s = "";
   for (const b of crypto.randomBytes(5)) s += alphabet[b % alphabet.length];
-  return `RAMLA15-${s}`;
+  return `RAMLA10-${s}`;
 }
 function findCode(code) {
   const c = String(code || "")
@@ -246,6 +294,7 @@ app.get("/api/shop", (req, res) => {
     delivery: shop.delivery,
     products: shop.products,
     wilayas: WILAYAS,
+    legal: shop.legal || {},
   });
 });
 
@@ -268,12 +317,17 @@ app.post("/api/subscribe", rateLimit(8, 10 * 60 * 1000), async (req, res) => {
     };
     await subscribers.save();
   }
+  if (entry.unsubscribedAt) {
+    delete entry.unsubscribedAt;
+    entry.lang = lang;
+    await subscribers.save();
+  } // réinscription
   if (entry.usedBy) return res.json({ ok: true, alreadyUsed: true });
 
   try {
     const sent = await sendMail({
       to: email,
-      ...welcomeEmail(entry.code, lang),
+      ...welcomeEmail(entry.code, lang, email),
     });
     // Sans SMTP configuré, on affiche le code à l'écran pour que le site reste utilisable.
     res.json({ ok: true, emailed: sent, code: sent ? undefined : entry.code });
@@ -332,6 +386,7 @@ app.post("/api/orders", rateLimit(10, 10 * 60 * 1000), async (req, res) => {
     });
   }
   if (!items.length) errors.push("items");
+  if (b.acceptTerms !== true) errors.push("terms");
   if (errors.length)
     return res.status(400).json({ error: "validation", fields: errors });
 
@@ -360,6 +415,7 @@ app.post("/api/orders", rateLimit(10, 10 * 60 * 1000), async (req, res) => {
       ? `السلام عليكم ${customer.firstName} 🌿\nهنا رملة ماتشا. شكرًا على طلبك ${id}:\n${itemsText}\nالمجموع: ${fmt(total)} (الدفع عند الاستلام)\nالعنوان: ${customer.address}، ${customer.commune}، ${wilaya.nameAr}\nهل تؤكدين الطلب؟`
       : `Salam ${customer.firstName} 🌿\nIt's Ramla Matcha. Thank you for your order ${id}:\n${itemsText}\nTotal: ${fmt(total)} (cash on delivery)\nAddress: ${customer.address}, ${customer.commune}, ${wilaya.name}\nCan you confirm your order?`;
   const order = {
+    termsAcceptedAt: new Date().toISOString(),
     id,
     createdAt: new Date().toISOString(),
     status: "new",
@@ -398,6 +454,25 @@ app.post("/api/orders", rateLimit(10, 10 * 60 * 1000), async (req, res) => {
 });
 
 /* ---------- admin ---------- */
+
+// Désinscription : depuis la page /unsubscribe.html (bouton) ou en un clic depuis Gmail (List-Unsubscribe-Post)
+async function doUnsubscribe(req, res) {
+  const email = checkUnsub(
+    req.query.e || req.body?.e,
+    req.query.t || req.body?.t,
+  );
+  if (!email) return res.status(400).json({ error: "invalid_link" });
+  const entry = subscribers.get()[email];
+  if (entry && !entry.unsubscribedAt) {
+    entry.unsubscribedAt = new Date().toISOString();
+    await subscribers.save();
+    console.log("[newsletter] désinscription", email);
+  }
+  res.json({ ok: true });
+}
+app.post("/api/unsubscribe", rateLimit(20, 10 * 60 * 1000), doUnsubscribe);
+app.post("/unsubscribe.html", rateLimit(20, 10 * 60 * 1000), doUnsubscribe);
+
 function adminAuth(req, res, next) {
   if (!ADMIN_PASSWORD)
     return res
@@ -445,12 +520,15 @@ app.patch("/api/admin/orders/:id", adminAuth, async (req, res) => {
 });
 app.get("/api/admin/subscribers.csv", adminAuth, (req, res) => {
   const rows = Object.entries(subscribers.get()).map(
-    ([e, s]) => `${e},${s.code},${s.lang},${s.createdAt},${s.usedBy || ""}`,
+    ([e, s]) =>
+      `${e},${s.code},${s.lang},${s.createdAt},${s.usedBy || ""},${s.unsubscribedAt || ""}`,
   );
   res
     .type("text/csv")
     .attachment("abonnees-ramla.csv")
-    .send("email,code,langue,date,utilise_par\n" + rows.join("\n"));
+    .send(
+      "email,code,langue,date,utilise_par,desinscrite_le\n" + rows.join("\n"),
+    );
 });
 
 app.use(

@@ -1,7 +1,7 @@
 # Ramla رملة Matcha
 
 Boutique en ligne et système de gestion de commandes pour Ramla Matcha.  
-L'application comprend le site vitrine/boutique, la gestion du panier, la collecte des e-mails (newsletter avec code promo -15 %), l'enregistrement des commandes (paiement à la livraison avec confirmation WhatsApp) et un tableau de bord administrateur sécurisé.
+L'application comprend le site vitrine/boutique, la gestion du panier, la collecte des e-mails (newsletter avec code promo -10 %), l'enregistrement des commandes (paiement à la livraison avec confirmation WhatsApp) et un tableau de bord administrateur sécurisé.
 
 ## Architecture du projet
 

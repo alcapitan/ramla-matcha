@@ -1,6 +1,6 @@
 {
   "currency": "DZD",
-  "discountPercent": 15,
+  "discountPercent": 10,
   "instagram": "ramla.matchadz",
   "tiktok": "ramla.matchadz",
   "delivery": {
@@ -21,27 +21,35 @@
         "/img/tins-stone.jpg",
         "/img/matcha-iced.webp",
         "/img/matcha-hot.webp",
-	"/img/powder.webp"
+        "/img/powder.webp"
       ],
-      "name": { "en": "Ceremonial Matcha — 30g", "ar": "ماتشا سيريمونيال — 30 غ" }
+      "name": {
+        "en": "Ceremonial Matcha — 30g",
+        "ar": "ماتشا سيريمونيال — 30 غ"
+      }
     },
     {
       "id": "whisk",
       "price": 1800,
-      "image": "/img/whisk.webp",
+      "image": "/img/whisk.jpg",
       "name": { "en": "Bamboo Whisk (Chasen)", "ar": "مخفقة الخيزران (تشاسن)" }
-    },
-    {
-      "id": "tote",
-      "price": 1500,
-      "image": "/img/bag.webp",
-      "name": { "en": "رملة Matcha Tote Bag", "ar": "حقيبة رملة ماتشا" }
-    },
-    {
-      "id": "cap",
-      "price": 2000,
-      "image": "/img/cap.webp",
-      "name": { "en": "رملة Matcha Cap", "ar": "قبعة رملة ماتشا" }
     }
-  ]
+  ],
+  "legal": {
+    "brand": "Ramla رملة Matcha",
+    "ownerName": "Isra MARREF",
+    "status": "Auto-entrepreneur (Algérie)",
+    "registrationNumber": "110408300742526398",
+    "nif": "110040117074250003",
+    "address": "Batna (05), Algérie",
+    "phone": "+33 6 50 35 84 72",
+    "whatsapp": "+33 6 50 35 84 72",
+    "email": "contact@ramla-matcha.com",
+    "domain": "ramla-matcha.com",
+    "hostName": "Hetzner Online GmbH",
+    "hostAddress": "Industriestr. 25, 91710 Gunzenhausen, Germany",
+    "carrier": "Yalidine",
+    "deliveryDays": "2 – 7",
+    "lastUpdated": "2026-10-16"
+  }
 }
