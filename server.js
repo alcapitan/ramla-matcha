@@ -168,7 +168,7 @@ function welcomeEmail(code, lang, email) {
   <table width="520" cellpadding="0" cellspacing="0" style="max-width:520px;background:#F8F4EC;border-radius:18px;overflow:hidden">
   <tr><td><img src="${SITE_URL}/img/hero.webp" width="520" style="display:block;width:100%;height:260px;object-fit:cover" alt=""></td></tr>
   <tr><td style="padding:36px 36px 40px;text-align:center">
-    <img style="height: 52px" src="/img/logo.png" alt="Ramla رملة Matcha logo">
+    <img style="height: 52px" src="${SITE_URL}/img/logo.png" alt="Ramla رملة Matcha logo">
     <h1 style="font-size:22px;font-weight:normal;margin:0 0 12px">${t.hi}</h1>
     <p style="font-size:15px;line-height:1.6;margin:0 0 24px;color:#4a4a42">${t.p}</p>
     <div style="display:inline-block;border:1.5px dashed #1E4A2C;border-radius:12px;padding:16px 28px;font-family:'Courier New',monospace;font-size:24px;letter-spacing:3px;color:#1E4A2C;background:#fff">${esc(code)}</div>
