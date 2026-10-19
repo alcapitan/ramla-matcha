@@ -31,7 +31,7 @@ window.LEGAL = {
 <h3>What we collect</h3>
 <ul>
   <li><b>When you order:</b> first name, last name, phone number, wilaya, commune, delivery address, and optionally your email and a note.</li>
-  <li><b>When you sign up for the 15% offer:</b> your email address and your language.</li>
+  <li><b>When you sign up for the 10% offer:</b> your email address and your language.</li>
 </ul>
 <h3>Why we use it</h3>
 <ul>
@@ -82,7 +82,7 @@ Phone: {{phone}} — WhatsApp: {{whatsapp}} — Email: {{email}}</p>
 <p>An order number is shown on screen. We then contact you on WhatsApp to confirm your order before shipping it. We may cancel an order if the information is incomplete or incorrect, or if we cannot reach you after several attempts.</p>
 
 <h2>6. Discount code</h2>
-<p>The 15% welcome code is personal, valid once, on a first order, for one person / email address. It applies to the products (not to delivery fees) and cannot be combined with any other offer.</p>
+<p>The 10% welcome code is personal, valid once, on a first order, for one person / email address. It applies to the products (not to delivery fees) and cannot be combined with any other offer.</p>
 
 <h2>7. Payment</h2>
 <p>Payment is made <b>in cash on delivery</b>, to the delivery agent, for the total amount shown in your order (products + delivery − any discount). No payment is made on the website and we never ask for your bank details.</p>

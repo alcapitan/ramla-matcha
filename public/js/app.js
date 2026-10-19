@@ -411,6 +411,57 @@
       .forEach((el) => io.observe(el));
   };
 
+  /* ---------------- mode sombre ---------------- */
+  // Au départ : toujours le thème du système (téléphone / ordinateur).
+  // Le bouton ☾ / ☀ change le thème pour la visite en cours seulement (sessionStorage).
+  const darkQuery = window.matchMedia
+    ? window.matchMedia("(prefers-color-scheme: dark)")
+    : null;
+  const systemTheme = () => (darkQuery && darkQuery.matches ? "dark" : "light");
+  const SS = {
+    get() {
+      try {
+        return sessionStorage.getItem("ramla_theme");
+      } catch {
+        return null;
+      }
+    },
+    set(v) {
+      try {
+        v
+          ? sessionStorage.setItem("ramla_theme", v)
+          : sessionStorage.removeItem("ramla_theme");
+      } catch {
+        /* indisponible */
+      }
+    },
+  };
+  try {
+    localStorage.removeItem("ramla_theme");
+  } catch {
+    /* ancien choix enregistré : on l'efface */
+  }
+  R.isDark = () =>
+    (document.documentElement.dataset.theme || systemTheme()) === "dark";
+  function applyTheme(t) {
+    if (t === "dark" || t === "light")
+      document.documentElement.dataset.theme = t;
+    else delete document.documentElement.dataset.theme; // suit le système
+    document
+      .querySelectorAll('meta[name="theme-color"]')
+      .forEach((m) => (m.content = R.isDark() ? "#12150F" : "#EFE9DD"));
+  }
+  applyTheme(SS.get());
+  if (darkQuery && darkQuery.addEventListener)
+    darkQuery.addEventListener("change", () => applyTheme(SS.get()));
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const next = R.isDark() ? "light" : "dark";
+    const choice = next === systemTheme() ? null : next; // revenir au thème du système = plus de choix forcé
+    SS.set(choice);
+    applyTheme(choice);
+  });
+
   /* ---------------- démarrage ---------------- */
   renderChrome();
   R.applyLang();
@@ -427,32 +478,4 @@
     R.observe();
     popup();
   }
-
-  /* ---------------- mode sombre ---------------- */
-  const darkQuery = window.matchMedia
-    ? window.matchMedia("(prefers-color-scheme: dark)")
-    : null;
-  R.isDark = () => {
-    const t = document.documentElement.dataset.theme;
-    return t ? t === "dark" : !!(darkQuery && darkQuery.matches);
-  };
-  function applyTheme(t) {
-    if (t === "dark" || t === "light")
-      document.documentElement.dataset.theme = t;
-    else delete document.documentElement.dataset.theme; // suit le réglage de l'appareil
-    document
-      .querySelectorAll('meta[name="theme-color"]')
-      .forEach((m) => (m.content = R.isDark() ? "#12150F" : "#EFE9DD"));
-  }
-  applyTheme(LS.get("ramla_theme", null));
-  if (darkQuery && darkQuery.addEventListener)
-    darkQuery.addEventListener("change", () =>
-      applyTheme(LS.get("ramla_theme", null)),
-    );
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest(".theme-btn")) return;
-    const next = R.isDark() ? "light" : "dark";
-    LS.set("ramla_theme", next);
-    applyTheme(next);
-  });
 })();
