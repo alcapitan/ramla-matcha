@@ -303,7 +303,7 @@
       <div class="modal-card">
         <button class="modal-close" data-i18n-aria="pop.close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
         <div class="lang-toggle modal-lang" role="group" aria-label="Language"><button data-lang="en" aria-pressed="false">EN</button><button data-lang="ar" aria-pressed="false">ع</button></div>
-        <div class="modal-media"><img src="/img/model-portrait.webp" alt=""></div>
+        <div class="modal-media"><img src="/img/hero.webp" alt=""></div>
         <div class="modal-body">
           <div class="pop-form">
             <span class="eyebrow">Ramla رملة</span>
