@@ -94,6 +94,25 @@ window.I18N = {
     "shop.d4.t": "Storage",
     "shop.d4.c":
       "Close the tin tightly after each use. Keep in a cool, dry place, away from light and humidity.",
+    "shop.benefits.title": "Benefits of our matcha",
+    "shop.benefits.s1.t": "Calm, lasting energy",
+    "shop.benefits.s1.p":
+      "Matcha naturally contains caffeine and L-theanine, an amino acid found in tea leaves. Together, they give you a calm energy that lasts for hours, without the jitters or the sudden crash that coffee causes. Perfect early in the morning, before studying, working or training.",
+    "shop.benefits.s2.t": "Rich in antioxidants",
+    "shop.benefits.s2.p":
+      "Matcha is a natural source of catechins, the polyphenols green tea is known for, including EGCG.",
+    "shop.benefits.s3.t": "The whole leaf",
+    "shop.benefits.s3.p":
+      "With regular green tea, you throw the leaves away. With matcha, you drink the whole leaf, stone-ground into a fine powder.",
+    "shop.benefits.s4.t": "Healthy",
+    "shop.benefits.s4.p":
+      "Prepared with water only, a bowl of matcha has around 10 kcal and no sugar.",
+    "shop.benefits.s5.t": "Relaxing",
+    "shop.benefits.s5.p":
+      "Whisk your matcha and sip it in complete calm, for a day full of energy and vitality.",
+    "shop.benefits.s6.t": "Matcha contains caffeine",
+    "shop.benefits.s6.p":
+      "Roughly 60–100 mg per 3 g serving. Not recommended for children or for pregnant or breastfeeding women. If you are sensitive to caffeine, limit your intake. Matcha is a food, not a medicine.",
     "shop.gallery": "In real life",
     "shop.pair": "Pairs well with",
 
@@ -327,6 +346,25 @@ window.I18N = {
     "shop.d4.t": "الحفظ",
     "shop.d4.c":
       "أغلقي العلبة جيدًا بعد كل استعمال. احفظيها في مكان بارد وجاف بعيدًا عن الضوء والرطوبة.",
+    "shop.benefits.title": "الفوائد",
+    "shop.benefits.s1.t": "طاقة هادئة دائمة",
+    "shop.benefits.s1.p":
+      "تحتوي الماتشا بشكل طبيعي على الكافيين والثيانين، وهو حمض أميني موجود في أوراق الشاي. معًا، يمنحانكِ نشاطًا هادئًا يدوم لساعات طويلة، دون التوتر أو الهبوط المفاجئ الذي تسبّبه القهوة. وهي مثالية في الصباح الباكر قبل الدراسة أو العمل أو التمرين.",
+    "shop.benefits.s2.t": "غنية بمضادات الأكسدة",
+    "shop.benefits.s2.p":
+      "الماتشا مصدر طبيعي للكاتيكينات، وهي البوليفينولات التي يشتهر بها الشاي الأخضر، ومنها EGCG.",
+    "shop.benefits.s3.t": "الورقة كاملة",
+    "shop.benefits.s3.p":
+      "مع الشاي الأخضر العادي تُرمى الأوراق. أما مع الماتشا فتشربين الورقة كاملة، مطحونة بالحجر إلى مسحوق ناعم.",
+    "shop.benefits.s4.t": "خفيفة",
+    "shop.benefits.s4.p":
+      "عند تحضيرها بالماء فقط، يحتوي كوب الماتشا على حوالي 10 سعرات حرارية ودون سكر.",
+    "shop.benefits.s5.t": "للاسترخاء",
+    "shop.benefits.s5.p":
+      "اخفقي الماتشا وتذوّقيها بهدوء تام، لبداية يوم مليء بالنشاط والحيوية.",
+    "shop.benefits.s6.t": "تحتوي الماتشا على الكافيين",
+    "shop.benefits.s6.p":
+      "حوالي 60–100 ملغ في كل 3 غ. لا يُنصح بها  الأطفال ،الحامل والمرضعة. إذا كانت لديك حساسية للكافيين، فقلّلي من استهلاكها. الماتشا غذاء وليست دواء.",
     "shop.gallery": "في الحياة اليومية",
     "shop.pair": "يتناسب مع",
 
