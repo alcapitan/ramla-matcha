@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Pages privées ou sans intérêt pour Google
+Disallow: /admin
+Disallow: /api/
+Disallow: /cart
+Disallow: /checkout
+Disallow: /thanks
+Disallow: /unsubscribe
+
+Sitemap: https://ramla-matcha.com/sitemap.xml
