@@ -1,7 +1,4 @@
 User-agent: *
-Allow: /
-
-# Pages privées ou sans intérêt pour Google
 Disallow: /admin
 Disallow: /api/
 Disallow: /cart
