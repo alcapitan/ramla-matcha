@@ -279,16 +279,16 @@
                     return;
                 }
 
-                function fee() {
-                    const w = $("wilaya").value;
-                    const type = form.deliveryType.value;
-                    if (!w) return null;
-                    const o = shop.delivery.overrides?.[w];
-                    return o && o[type] != null ? o[type] : shop.delivery[type];
-                }
+                // null = mode de livraison pas disponible dans cette wilaya ("desk": null dans shop.json)
                 function feeFor(type) {
                     const o = shop.delivery.overrides?.[$("wilaya").value];
-                    return o && o[type] != null ? o[type] : shop.delivery[type];
+                    return o && Object.prototype.hasOwnProperty.call(o, type)
+                        ? o[type]
+                        : shop.delivery[type];
+                }
+                function fee() {
+                    if (!$("wilaya").value) return null;
+                    return feeFor(form.deliveryType.value);
                 }
                 function wilayas() {
                     const sel = $("wilaya");
@@ -319,6 +319,19 @@
                     const disc = promo
                         ? Math.round((sub * promo.percent) / 100)
                         : 0;
+                    // Stop desk indisponible dans la wilaya choisie : on le grise et on passe en livraison à domicile
+                    const deskRadio = form.querySelector(
+                        'input[name="deliveryType"][value="desk"]',
+                    );
+                    const deskOff = feeFor("desk") == null;
+                    deskRadio.disabled = deskOff;
+                    deskRadio.closest("label").style.opacity = deskOff
+                        ? ".45"
+                        : "";
+                    if (deskOff && deskRadio.checked)
+                        form.querySelector(
+                            'input[name="deliveryType"][value="home"]',
+                        ).checked = true;
                     const f = fee();
                     $("sum-sub").textContent = R.money(sub);
                     $("sum-disc-line").hidden = !disc;
@@ -327,14 +340,11 @@
                         f == null ? R.t("co.pickWilaya") : R.money(f);
                     $("sum-ship").style.fontFamily = f == null ? "inherit" : "";
                     $("sum-total").textContent = R.money(sub - disc + (f || 0));
-                    document
-                        .querySelectorAll("[data-fee]")
-                        .forEach(
-                            (el) =>
-                                (el.textContent = R.money(
-                                    feeFor(el.dataset.fee),
-                                )),
-                        );
+                    document.querySelectorAll("[data-fee]").forEach((el) => {
+                        const v = feeFor(el.dataset.fee);
+                        el.textContent =
+                            v == null ? R.t("co.unavailable") : R.money(v);
+                    });
                 }
 
                 async function applyPromo(silent) {

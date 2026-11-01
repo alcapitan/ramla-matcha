@@ -225,7 +225,10 @@ function normalizePhone(raw) {
 const waNumber = (localPhone) => "213" + localPhone.slice(1);
 function deliveryFee(wilayaCode, type) {
   const o = shop.delivery.overrides?.[String(wilayaCode)];
-  return o && o[type] != null ? o[type] : shop.delivery[type];
+  // "desk": null dans shop.json = Stop desk pas disponible dans cette wilaya
+  return o && Object.prototype.hasOwnProperty.call(o, type)
+    ? o[type]
+    : shop.delivery[type];
 }
 function newCode() {
   const alphabet = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
@@ -405,6 +408,10 @@ app.post("/api/orders", rateLimit(10, 10 * 60 * 1000), async (req, res) => {
     promoCode = found.code;
   }
   const fee = deliveryFee(wilaya.code, deliveryType);
+  if (fee == null)
+    return res
+      .status(400)
+      .json({ error: "validation", fields: ["deliveryType"] });
   const total = subtotal - discount + fee;
 
   const store = orders.get();

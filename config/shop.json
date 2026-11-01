@@ -4,16 +4,45 @@
   "instagram": "ramla.matchadz",
   "tiktok": "ramla.matchadz",
   "delivery": {
-    "home": 600,
-    "desk": 400,
+    "_comment": "Tarifs RedEx (starter, 2026). desk = Stop desk, home = domicile. Par défaut : desk 450 / home 750. \"desk\": null = Stop desk pas encore disponible dans cette wilaya.",
+    "home": 750,
+    "desk": 450,
     "overrides": {
-      "16": { "home": 400, "desk": 300 }
+      "1": { "home": 1300, "desk": 800 },
+      "3": { "home": 950, "desk": 550 },
+      "5": { "home": 450, "desk": 350 },
+      "7": { "home": 800, "desk": 500 },
+      "8": { "home": 1300, "desk": 800 },
+      "11": { "home": 1400, "desk": 800 },
+      "12": { "home": 800, "desk": 500 },
+      "16": { "home": 700, "desk": 400 },
+      "17": { "home": 800, "desk": 500 },
+      "19": { "home": 700, "desk": 450 },
+      "30": { "home": 950, "desk": 550 },
+      "31": { "home": 700, "desk": 450 },
+      "32": { "home": 950, "desk": 550 },
+      "33": { "home": 1700, "desk": 800 },
+      "36": { "home": 800, "desk": 500 },
+      "37": { "home": 1500, "desk": 800 },
+      "39": { "home": 950, "desk": 550 },
+      "45": { "home": 950, "desk": 550 },
+      "47": { "home": 950, "desk": 550 },
+      "49": { "home": 1300, "desk": null },
+      "50": { "home": 1700, "desk": null },
+      "51": { "home": 800, "desk": null },
+      "52": { "home": 1300, "desk": null },
+      "53": { "home": 1300, "desk": null },
+      "54": { "home": 1700, "desk": null },
+      "55": { "home": 950, "desk": null },
+      "56": { "home": 1700, "desk": null },
+      "57": { "home": 950, "desk": null },
+      "58": { "home": 1100, "desk": null }
     }
   },
   "products": [
     {
       "id": "matcha-30g",
-      "price": 5000,
+      "price": 3900,
       "image": "/img/tin-dark.webp",
       "gallery": [
         "/img/tin-dark.webp",
@@ -48,8 +77,8 @@
     "domain": "ramla-matcha.com",
     "hostName": "Hetzner Online GmbH",
     "hostAddress": "Industriestr. 25, 91710 Gunzenhausen, Germany",
-    "carrier": "Yalidine",
-    "deliveryDays": "2 – 7",
-    "lastUpdated": "2026-10-16"
+    "carrier": "RedEx",
+    "deliveryDays": "1 - 4",
+    "lastUpdated": "2026-11-01"
   }
 }
