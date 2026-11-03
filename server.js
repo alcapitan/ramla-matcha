@@ -137,7 +137,10 @@ const esc = (s) =>
         c
       ],
   );
-const fmt = (n) => `${Number(n).toLocaleString("fr-FR").replace(/ /g, " ")} DA`;
+const fmt = (n) =>
+  `\u2066${Number(n)
+    .toLocaleString("fr-FR")
+    .replace(/[\s\u00a0\u202f]/g, "\u202F")}\u2069 DA`;
 
 function welcomeEmail(code, lang, email) {
   const ar = lang === "ar";

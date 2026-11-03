@@ -56,7 +56,9 @@
 
   /* ---------------- format ---------------- */
   R.money = (n) =>
-    `${Math.round(n).toLocaleString("fr-FR").replace(/ | /g, " ")} ${R.t("currency")}`;
+    `\u2066${Math.round(n)
+      .toLocaleString("fr-FR")
+      .replace(/[\s\u00a0\u202f]/g, "\u202F")}\u2069 ${R.t("currency")}`;
   R.esc = (s) =>
     String(s ?? "").replace(
       /[&<>"']/g,
