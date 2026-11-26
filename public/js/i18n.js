@@ -3,6 +3,8 @@
 window.I18N = {
   en: {
     announce: "Cash on delivery · 58 wilayas · 10% off your first order",
+    announce2:
+      "Please note: The website will be closed from December 21 through 27 !",
     "nav.shop": "Shop",
     "nav.story": "Our Story",
     "nav.accessories": "Accessories",
@@ -256,6 +258,8 @@ window.I18N = {
 
   ar: {
     announce: "الدفع عند الاستلام · 58 ولاية · خصم 10٪ على طلبك الأول",
+    announce2:
+      "تنبيه: سيتم إغلاق الموقع الإلكتروني في الفترة من 21 إلى 27 ديسمبر!",
     "nav.shop": "المتجر",
     "nav.story": "قصتنا",
     "nav.accessories": "الإكسسوارات",

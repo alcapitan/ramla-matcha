@@ -212,6 +212,7 @@
     const header = document.getElementById("site-header");
     if (header) {
       header.outerHTML = `
+      <div class="announce" style="background-color: var(--danger); font-size: 1rem;" data-i18n="announce2"></div>
       <div class="announce" data-i18n="announce"></div>
       <header class="site-header">
         <div class="wrap header-inner">
